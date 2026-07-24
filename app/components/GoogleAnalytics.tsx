@@ -1,6 +1,7 @@
 "use client";
 
 import Script from "next/script";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import {
@@ -129,6 +130,12 @@ export default function GoogleAnalytics() {
                 Evelasting uses Google Analytics to understand site visits and
                 improve the experience. Analytics only starts after you accept.
               </p>
+              <Link
+                href="/privacy"
+                className="mt-2 inline-block text-xs text-white/50 underline decoration-white/25 underline-offset-4 transition hover:text-white"
+              >
+                Privacy Policy
+              </Link>
             </div>
             <div className="flex shrink-0 flex-col gap-2 min-[420px]:flex-row">
               <button
