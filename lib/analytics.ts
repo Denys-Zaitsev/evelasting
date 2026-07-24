@@ -20,8 +20,10 @@ export function initializeAnalytics() {
   window.dataLayer = window.dataLayer || [];
   window.gtag =
     window.gtag ||
-    function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
+    function gtag() {
+      // Google Tag expects the native Arguments object for queued commands.
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer.push(arguments);
     };
 
   window.gtag("js", new Date());
