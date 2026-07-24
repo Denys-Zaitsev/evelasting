@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { memo } from "react";
 import { useLanguage } from "../LanguageContext";
 import type { PlayerTrack } from "../PlayerContext";
+import { getReleaseByTitle } from "./releases";
 
 function formatYear(value: string) {
   if (!value) return "—";
@@ -22,6 +24,7 @@ type ReleaseCardProps = {
 
 function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: ReleaseCardProps) {
   const { t } = useLanguage();
+  const release = getReleaseByTitle(track.title);
 
   return (
     <article
@@ -54,7 +57,17 @@ function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: Rel
         </div>
         <span className="shrink-0 pt-0.5 text-[9px] text-white/35 sm:text-[10px]">{formatYear(track.publishedAt)}</span>
       </div>
-      <a href={track.permalink} target="_blank" rel="noreferrer" className="mt-2.5 inline-flex items-center gap-2 text-[8px] font-semibold uppercase tracking-[0.18em] text-white/40 transition-colors hover:text-white sm:mt-3 sm:text-[9px] sm:tracking-[0.22em]">SoundCloud <span aria-hidden="true">↗</span></a>
+      <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-2 sm:mt-3">
+        {release && (
+          <Link
+            href={`/music/${release.slug}`}
+            className="inline-flex items-center gap-2 text-[8px] font-semibold uppercase tracking-[0.18em] text-white/65 transition-colors hover:text-white sm:text-[9px] sm:tracking-[0.22em]"
+          >
+            Release page <span aria-hidden="true">→</span>
+          </Link>
+        )}
+        <a href={track.permalink} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[8px] font-semibold uppercase tracking-[0.18em] text-white/40 transition-colors hover:text-white sm:text-[9px] sm:tracking-[0.22em]">SoundCloud <span aria-hidden="true">↗</span></a>
+      </div>
     </article>
   );
 }

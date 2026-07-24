@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "motion/react";
 import { useLanguage } from "../LanguageContext";
 import { usePlayer } from "../PlayerContext";
@@ -246,6 +247,13 @@ export default function FeaturedRelease({
                   <span aria-hidden="true">↗</span>
                 </motion.a>
               )}
+
+              <Link
+                href={`/music/${release.slug}`}
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/12 bg-white/[0.035] px-6 text-[9px] font-semibold uppercase tracking-[0.22em] text-white/70 transition hover:border-white/30 hover:bg-white/[0.07] hover:text-white"
+              >
+                Release page
+              </Link>
 
               <motion.a
                 href="#discography"

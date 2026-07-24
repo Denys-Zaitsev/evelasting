@@ -133,3 +133,28 @@ export const releases: Release[] = [
       "https://open.spotify.com/track/0FwFtQLezEBeTdFPaappOe",
   },
 ];
+
+function normalizeReleaseTitle(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/\[.*?\]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+export function getReleaseBySlug(slug: string) {
+  return releases.find((release) => release.slug === slug);
+}
+
+export function getReleaseByTitle(title: string) {
+  const normalizedTitle = normalizeReleaseTitle(title);
+
+  return releases.find((release) => {
+    const normalizedReleaseTitle = normalizeReleaseTitle(release.title);
+    return (
+      normalizedTitle === normalizedReleaseTitle ||
+      normalizedTitle.includes(normalizedReleaseTitle) ||
+      normalizedReleaseTitle.includes(normalizedTitle)
+    );
+  });
+}
