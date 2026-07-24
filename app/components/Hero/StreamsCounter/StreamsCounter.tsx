@@ -133,7 +133,6 @@ export default function StreamsCounter({
 
   return (
     <span
-      aria-label={`${fullValue} total plays`}
       className="
         relative inline-grid h-[1em]
         cursor-default items-start
@@ -153,6 +152,8 @@ export default function StreamsCounter({
         setHovered(false);
       }}
     >
+      <span className="sr-only">{fullValue} total plays</span>
+
       <motion.span
         aria-hidden="true"
         className="

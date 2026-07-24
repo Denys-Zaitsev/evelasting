@@ -76,6 +76,7 @@
     },
     "/api/artist": {
       "initialHeaders": {
+        "cache-control": "public, s-maxage=600, stale-while-revalidate=86400",
         "content-type": "application/json",
         "x-next-cache-tags": "_N_T_/layout,_N_T_/api/layout,_N_T_/api/artist/layout,_N_T_/api/artist/route,_N_T_/api/artist"
       },
@@ -223,8 +224,8 @@
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "b0197dbad19971d09b20bb18bd25649b",
-    "previewModeSigningKey": "1a776aa3dc80bc7c9fd6408dadbb58b4354357b8399f3977514aa8293824beef",
-    "previewModeEncryptionKey": "efa19f0a258ab45f495529eb8847efaec22792f9b923d465afb0fb30e9965a59"
+    "previewModeId": "f3c6fc3f419d6121ee8485a1685c8e40",
+    "previewModeSigningKey": "503c3b077084fed6b71b7aeef12f6b09023367c2cf425aec12ff5784b84ecff4",
+    "previewModeEncryptionKey": "d1eeb0034ebd5603a631fd658575261660592f765b491db92456187f43b189cf"
   }
 }

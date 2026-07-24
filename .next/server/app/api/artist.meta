@@ -1,1 +1,1 @@
-{"status":200,"headers":{"content-type":"application/json","x-next-cache-tags":"_N_T_/layout,_N_T_/api/layout,_N_T_/api/artist/layout,_N_T_/api/artist/route,_N_T_/api/artist"}}
+{"status":200,"headers":{"cache-control":"public, s-maxage=600, stale-while-revalidate=86400","content-type":"application/json","x-next-cache-tags":"_N_T_/layout,_N_T_/api/layout,_N_T_/api/artist/layout,_N_T_/api/artist/route,_N_T_/api/artist"}}

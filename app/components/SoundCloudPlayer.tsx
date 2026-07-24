@@ -973,7 +973,7 @@ export default function SoundCloudPlayer() {
         ref={iframeRef}
         title="SoundCloud audio engine"
         src={playerUrl}
-        allow="autoplay"
+        allow="autoplay; encrypted-media"
         scrolling="no"
         frameBorder="0"
         className="soundcloud-engine"
@@ -998,7 +998,7 @@ export default function SoundCloudPlayer() {
         onPointerMove={movePlayer}
         onPointerUp={stopPlayerDrag}
         onPointerCancel={stopPlayerDrag}
-        aria-hidden={playRequested === 0 && toggleRequested === 0}
+        inert={playRequested === 0 && toggleRequested === 0}
       >
         <button
           type="button"

@@ -74,7 +74,7 @@ export default function HeroBottom({
             <span className="h-px w-9 bg-red-500/80 transition-all duration-200 group-hover:w-14" />
           </div>
 
-          <p className="mt-2 text-[7px] uppercase tracking-[0.22em] text-white/38 md:text-[8px]">
+          <p className="mt-2 text-[7px] uppercase tracking-[0.22em] text-white/68 md:text-[8px]">
             YouTube{" "}
             <span className="px-1 text-red-500/80">•</span>{" "}
             SoundCloud
@@ -108,15 +108,15 @@ export default function HeroBottom({
         }}
         className="flex flex-col items-start text-left"
       >
-        <p className="max-w-[220px] text-[8px] uppercase leading-5 tracking-[0.34em] text-white/56 md:text-[9px]">
+        <p className="max-w-[220px] text-[8px] uppercase leading-5 tracking-[0.34em] text-white/72 md:text-[9px]">
           {t("soundReturns")}
         </p>
 
         <a
           href="#story"
-          className="group mt-4 inline-flex items-center gap-3 text-[7px] uppercase tracking-[0.3em] text-white/30 transition-colors duration-300 hover:text-white md:text-[8px]"
+          className="group mt-4 inline-flex items-center gap-3 text-[7px] uppercase tracking-[0.3em] text-white/68 transition-colors duration-300 hover:text-white md:text-[8px]"
         >
-          <span className="h-px w-6 bg-white/20 transition-all duration-500 group-hover:w-10 group-hover:bg-red-500" />
+          <span className="h-px w-6 bg-white/45 transition-all duration-500 group-hover:w-10 group-hover:bg-red-500" />
           {t("discover")}
         </a>
       </motion.div>
