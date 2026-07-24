@@ -82,7 +82,7 @@ export default function PlayButton({
         }}
         className="
           pointer-events-none absolute
-          h-52 w-52 rounded-full
+          h-36 w-36 rounded-full sm:h-44 sm:w-44 lg:h-52 lg:w-52
           bg-red-600/25 blur-[58px]
           transition-transform duration-500
           group-hover/play:scale-125
@@ -105,7 +105,7 @@ export default function PlayButton({
         }}
         className="
           pointer-events-none absolute
-          h-36 w-36 rounded-full
+          h-28 w-28 rounded-full sm:h-32 sm:w-32 lg:h-36 lg:w-36
           border border-dashed border-white/10
           transition-all duration-500
           group-hover/play:border-red-500/35
@@ -147,7 +147,7 @@ export default function PlayButton({
         }}
         className={`
           relative z-10 flex
-          h-28 w-28 items-center justify-center
+          h-20 w-20 items-center justify-center sm:h-24 sm:w-24 lg:h-28 lg:w-28
           overflow-hidden rounded-full
           border outline-none
           transition-[background-color,border-color,color,box-shadow]
@@ -160,10 +160,10 @@ export default function PlayButton({
           focus-visible:ring-red-500
           focus-visible:ring-offset-4
           focus-visible:ring-offset-black
-          [@media(max-height:760px)]:h-24
-          [@media(max-height:760px)]:w-24
-          [@media(min-height:950px)]:h-32
-          [@media(min-height:950px)]:w-32
+          [@media(max-height:760px)]:h-20
+          [@media(max-height:760px)]:w-20
+          [@media(min-height:950px)]:lg:h-32
+          [@media(min-height:950px)]:lg:w-32
           ${
             isActive
               ? "border-red-400 bg-red-600 text-white shadow-[0_0_100px_rgba(239,68,68,0.55)]"

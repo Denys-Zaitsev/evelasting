@@ -57,7 +57,7 @@ export default function Navbar() {
         className="
           mx-auto flex max-w-7xl
           items-center justify-between
-          px-8 py-6
+          px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6
         "
       >
         <Link
@@ -66,7 +66,7 @@ export default function Navbar() {
           aria-label="Return to the Evelasting homepage"
           className="
             group/logo relative
-            text-lg font-semibold tracking-[0.4em]
+            text-sm font-semibold tracking-[0.26em] sm:text-base sm:tracking-[0.34em] lg:text-lg lg:tracking-[0.4em]
             text-white outline-none
             transition-[transform,text-shadow,opacity]
             duration-300
@@ -189,9 +189,9 @@ export default function Navbar() {
           </a>
         </nav>
 
-        <div className="ml-4 flex items-center rounded-full border border-white/10 bg-black/30 p-1 text-[10px] font-semibold tracking-[0.18em] text-white/45 backdrop-blur-xl">
+        <div className="ml-2 flex shrink-0 items-center rounded-full border border-white/10 bg-black/30 p-1 text-[10px] font-semibold tracking-[0.18em] text-white/45 backdrop-blur-xl">
           {(["en", "uk"] as const).map((item) => (
-            <button key={item} type="button" onClick={() => setLanguage(item)} aria-pressed={language === item} className={`rounded-full px-3 py-2 transition ${language === item ? "bg-white text-black" : "hover:text-white"}`}>
+            <button key={item} type="button" onClick={() => setLanguage(item)} aria-pressed={language === item} className={`rounded-full px-2.5 py-2 sm:px-3 transition ${language === item ? "bg-white text-black" : "hover:text-white"}`}>
               {item === "en" ? "ENG" : "UA"}
             </button>
           ))}

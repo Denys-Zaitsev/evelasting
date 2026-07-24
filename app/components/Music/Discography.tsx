@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, type WheelEvent } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import { useLanguage } from "../LanguageContext";
 import { usePlayer } from "../PlayerContext";
@@ -19,7 +19,7 @@ function matchesFilter(title: string, genre: string, filter: ReleaseFilter) {
 }
 
 export default function Discography() {
-  const { tracks, currentTrack, isReady } = usePlayer();
+  const { tracks, currentTrack, isReady, isPlaying, playTrack, setPreviewArtwork } = usePlayer();
   const { t } = useLanguage();
   const gridRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
@@ -33,20 +33,16 @@ export default function Discography() {
     });
   }, [tracks, query, filter]);
 
-  const scrollByRows = (direction: number) => {
+  const scrollByRows = useCallback((direction: number) => {
     const grid = gridRef.current;
     if (!grid) return;
-    grid.scrollBy({ top: direction * Math.max(520, grid.clientHeight * 0.9), behavior: "smooth" });
-  };
+    grid.scrollBy({ top: direction * Math.max(420, grid.clientHeight * 0.85), behavior: "smooth" });
+  }, []);
 
-  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
-    const grid = gridRef.current;
-    if (!grid) return;
-    const atTop = grid.scrollTop <= 1;
-    const atBottom = grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 1;
-    if ((event.deltaY < 0 && atTop) || (event.deltaY > 0 && atBottom)) return;
-    event.stopPropagation();
-  };
+
+  const handlePlay = useCallback((index: number) => playTrack(index), [playTrack]);
+  const handlePreview = useCallback((artwork: string | null) => setPreviewArtwork(artwork), [setPreviewArtwork]);
+
 
   const filters: Array<{ value: ReleaseFilter; label: string }> = [
     { value: "all", label: t("filterAll") },
@@ -95,12 +91,12 @@ export default function Discography() {
           <div aria-hidden className="release-library-fade release-library-fade-top" />
           <div aria-hidden className="release-library-fade release-library-fade-bottom" />
 
-          <div ref={gridRef} onWheel={handleWheel} className="release-library-scroll" tabIndex={0} aria-label={t("allReleases")}>
+          <div ref={gridRef} className="release-library-scroll" tabIndex={0} aria-label={t("allReleases")}>
             {visibleTracks.length ? (
               <div className="release-library-grid">
                 {visibleTracks.map((track) => {
                   const originalIndex = tracks.findIndex((item) => item.id === track.id);
-                  return <div key={track.id} className="release-library-card"><ReleaseCard track={track} index={originalIndex} /></div>;
+                  return <div key={track.id} className="release-library-card"><ReleaseCard track={track} index={originalIndex} active={currentTrack?.id === track.id} isPlaying={Boolean(currentTrack?.id === track.id && isPlaying)} onPlay={handlePlay} onPreview={handlePreview} /></div>;
                 })}
               </div>
             ) : (

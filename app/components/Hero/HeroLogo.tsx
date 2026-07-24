@@ -7,72 +7,32 @@ type HeroLogoProps = {
   shouldReduceMotion: boolean | null;
 };
 
-export default function HeroLogo({
-  shouldReduceMotion,
-}: HeroLogoProps) {
+export default function HeroLogo({ shouldReduceMotion }: HeroLogoProps) {
   return (
-    <div className="flex min-h-0 items-center justify-center">
+    <div className="flex min-h-0 w-full items-center justify-center overflow-visible px-0 sm:px-3">
       <motion.div
         initial={
           shouldReduceMotion
             ? false
-            : {
-                opacity: 0,
-                scale: 0.9,
-                filter: "blur(14px)",
-              }
+            : { opacity: 0, y: 34, scale: 0.84, filter: "blur(14px)" }
         }
-        animate={
-          shouldReduceMotion
-            ? undefined
-            : {
-                opacity: 1,
-                scale: 1,
-                filter: "blur(0px)",
-              }
-        }
+        animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
         transition={{
-          duration: 1.3,
-          delay: 0.42,
-          ease: [0.22, 1, 0.36, 1],
+          duration: 0.95,
+          delay: 0.28,
+          ease: [0.16, 1, 0.3, 1],
         }}
-        className="
-          flex w-[min(78vw,1500px)]
-          items-center justify-center
-          [@media(max-height:760px)]:w-[min(65vw,1050px)]
-          [@media(min-height:1000px)]:w-[min(80vw,1650px)]
-        "
+        className="relative mx-auto flex w-[min(96vw,1500px)] items-center justify-center"
       >
-        <motion.div
-          animate={
-            shouldReduceMotion
-              ? undefined
-              : {
-                  scale: [1, 1.035, 1],
-                  opacity: [0.96, 1, 0.96],
-                  filter: [
-                    "drop-shadow(0 0 0 rgba(255,255,255,0))",
-                    "drop-shadow(0 0 34px rgba(255,255,255,0.16))",
-                    "drop-shadow(0 0 0 rgba(255,255,255,0))",
-                  ],
-                }
-          }
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="w-full"
-        >
-          <Image
-            src="/images/evelasting-logo.png"
-            alt="Evelasting"
-            width={1800}
-            height={450}
-            priority
-            className="h-auto w-full object-contain"
-          />
-        </motion.div>
+        <Image
+          src="/evelasting-logo.png"
+          alt="Evelasting"
+          width={1800}
+          height={450}
+          priority
+          sizes="(max-width: 640px) 96vw, (max-width: 1280px) 90vw, 1500px"
+          className="hero-logo mx-auto h-auto w-full select-none object-contain"
+        />
       </motion.div>
     </div>
   );
