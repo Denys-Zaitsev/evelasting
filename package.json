@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "motion": "^12.42.2",
     "next": "16.2.10",
     "react": "19.2.4",
@@ -24,5 +25,5 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "description": "Official website of Evelasting \u2014 independent Ukrainian producer."
+  "description": "Official website of Evelasting — independent Ukrainian producer."
 }

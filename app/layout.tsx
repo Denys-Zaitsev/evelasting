@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 
+import { Analytics } from "@vercel/analytics/next";
 import { siteConfig, socialProfiles } from "@/lib/site";
 import PwaRegistration from "./components/PwaRegistration";
 import "./globals.css";
@@ -109,6 +110,7 @@ export default function RootLayout({
         </a>
         {children}
         <PwaRegistration />
+        <Analytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(artistSchema) }}
