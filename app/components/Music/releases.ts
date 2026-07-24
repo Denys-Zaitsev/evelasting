@@ -22,8 +22,7 @@ export const releases: Release[] = [
     description:
       "The release that marked Evelasting's return and introduced the project to listeners around the world.",
     cover: "/images/Rebirth of the Ukrainian Phonk.png",
-    soundcloud:
-      "https://soundcloud.com/boba-698696018/rebirth-of-the-ukrainian-phonk",
+    soundcloud: "https://soundcloud.com/evelasting1",
     spotify:
       "https://open.spotify.com/track/2gsqaDLcvQS6FAtaZbpHhL",
   },
@@ -37,8 +36,7 @@ export const releases: Release[] = [
     description:
       "A nocturnal blend of soft atmosphere, urban motion and a restrained phonk pulse.",
     cover: "/images/Dreamy Urban Phonk.jpg",
-    soundcloud:
-      "https://soundcloud.com/boba-698696018/dreamy-urban-phonk",
+    soundcloud: "https://soundcloud.com/evelasting1",
   },
   {
     id: 3,
@@ -50,8 +48,7 @@ export const releases: Release[] = [
     description:
       "A spacious, melodic track built around the idea that sound can outlive the moment that created it.",
     cover: "/images/Eternity of Sound.jpg",
-    soundcloud:
-      "https://soundcloud.com/boba-698696018/eternity-of-sound",
+    soundcloud: "https://soundcloud.com/evelasting1",
   },
   {
     id: 4,
@@ -63,8 +60,7 @@ export const releases: Release[] = [
     description:
       "Cold space, distant light and a heavy low end shape one of Evelasting's darkest atmospheres.",
     cover: "/images/Darkness Of Space.png",
-    soundcloud:
-      "https://soundcloud.com/boba-698696018/darkness-of-space",
+    soundcloud: "https://soundcloud.com/evelasting1",
   },
   {
     id: 5,
@@ -76,8 +72,7 @@ export const releases: Release[] = [
     description:
       "An aggressive, high-pressure phonk cut designed around momentum and impact.",
     cover: "/images/Rampage 185.jpg",
-    soundcloud:
-      "https://soundcloud.com/boba-698696018/rampage-185",
+    soundcloud: "https://soundcloud.com/evelasting1",
   },
   {
     id: 6,
@@ -89,8 +84,7 @@ export const releases: Release[] = [
     description:
       "A dramatic collision of distorted energy, tension and the recurring theme of eternity.",
     cover: "/images/Blood Of The Eternity.png",
-    soundcloud:
-      "https://soundcloud.com/boba-698696018/blood-of-the-eternity",
+    soundcloud: "https://soundcloud.com/evelasting1",
   },
   {
     id: 7,
@@ -102,7 +96,7 @@ export const releases: Release[] = [
     description:
       "Raw percussion and fractured textures turn WRACK into a compact burst of controlled chaos.",
     cover: "/images/WRACK.png",
-    soundcloud: "https://soundcloud.com/boba-698696018/wrack",
+    soundcloud: "https://soundcloud.com/evelasting1",
   },
   {
     id: 8,
@@ -114,8 +108,7 @@ export const releases: Release[] = [
     description:
       "A direct and energetic phonk statement with a sharp hook and club-focused movement.",
     cover: "/images/yhhb-phonk.png",
-    soundcloud:
-      "https://soundcloud.com/boba-698696018/unnv-evelasting-phonk",
+    soundcloud: "https://soundcloud.com/evelasting1",
   },
   {
     id: 9,
@@ -127,8 +120,7 @@ export const releases: Release[] = [
     description:
       "Warm sunset colors meet late-night fatigue in a slower, reflective side of Evelasting's sound.",
     cover: "/images/Sunset Patigue.png",
-    soundcloud:
-      "https://soundcloud.com/boba-698696018/sunset-fatiguefonc",
+    soundcloud: "https://soundcloud.com/evelasting1",
     spotify:
       "https://open.spotify.com/track/0FwFtQLezEBeTdFPaappOe",
   },

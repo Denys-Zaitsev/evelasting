@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -9,6 +8,7 @@ import {
   type Release,
 } from "@/app/components/Music/releases";
 import { siteConfig } from "@/lib/site";
+import ReleasePageContent from "./ReleasePageContent";
 
 type ReleasePageProps = {
   params: Promise<{ slug: string }>;
@@ -53,8 +53,10 @@ export async function generateMetadata({
       description,
       images: [
         {
-          url: release.cover,
-          alt: `${release.title} cover artwork`,
+          url: "/og/evelasting-og.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Evelasting — Independent Ukrainian Producer",
         },
       ],
     },
@@ -62,34 +64,9 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [release.cover],
+      images: ["/og/evelasting-og.jpg"],
     },
   };
-}
-
-function PlatformLink({
-  href,
-  children,
-  primary = false,
-}: {
-  href: string;
-  children: React.ReactNode;
-  primary?: boolean;
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      className={`inline-flex min-h-12 items-center justify-center gap-3 rounded-full border px-6 text-[10px] font-semibold uppercase tracking-[0.2em] transition ${
-        primary
-          ? "border-red-500/55 bg-red-600/15 text-white hover:border-red-400 hover:bg-red-600/25"
-          : "border-white/15 bg-white/[0.035] text-white/65 hover:border-white/35 hover:text-white"
-      }`}
-    >
-      {children} <span aria-hidden="true">↗</span>
-    </a>
-  );
 }
 
 function ReleaseSchema({ release }: { release: Release }) {
@@ -99,7 +76,7 @@ function ReleaseSchema({ release }: { release: Release }) {
     "@id": `${siteConfig.url}/music/${release.slug}#recording`,
     name: release.title,
     url: `${siteConfig.url}/music/${release.slug}`,
-    image: `${siteConfig.url}${encodeURI(release.cover)}`,
+    image: `${siteConfig.url}/og/evelasting-og.jpg`,
     description: release.description,
     genre: release.genre,
     datePublished: String(release.year),
@@ -109,7 +86,7 @@ function ReleaseSchema({ release }: { release: Release }) {
       name: release.artist,
       url: siteConfig.url,
     },
-    sameAs: [release.soundcloud, release.spotify].filter(Boolean),
+    sameAs: [siteConfig.links.soundcloud, release.spotify].filter(Boolean),
   };
 
   return (
@@ -125,10 +102,6 @@ export default async function ReleasePage({ params }: ReleasePageProps) {
   const release = getReleaseBySlug(slug);
 
   if (!release) notFound();
-
-  const soundCloudPlayer = `https://w.soundcloud.com/player/?url=${encodeURIComponent(
-    release.soundcloud,
-  )}&color=%23ef4444&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&visual=true`;
 
   return (
     <main
@@ -156,87 +129,7 @@ export default async function ReleasePage({ params }: ReleasePageProps) {
           </Link>
         </header>
 
-        <article className="py-14 sm:py-20">
-          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
-            <div className="relative mx-auto aspect-square w-full max-w-xl overflow-hidden rounded-[34px] border border-white/10 bg-neutral-950 shadow-[0_40px_140px_rgba(0,0,0,0.72)]">
-              <Image
-                src={release.cover}
-                alt={`${release.title} cover artwork`}
-                fill
-                priority
-                sizes="(max-width: 1024px) 92vw, 520px"
-                className="object-cover"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.07] via-transparent to-black/35" />
-            </div>
-
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-red-400/80">
-                Official release · {release.year}
-              </p>
-              <h1 className="mt-5 text-4xl font-semibold leading-[0.95] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
-                {release.title}
-              </h1>
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.24em] text-white/35">
-                {release.artist} · {release.genre}
-              </p>
-              <p className="mt-8 max-w-2xl text-base leading-8 text-white/55">
-                {release.description}
-              </p>
-
-              <div className="mt-9 flex flex-wrap gap-3">
-                <PlatformLink href={release.soundcloud} primary>
-                  SoundCloud
-                </PlatformLink>
-                {release.spotify && (
-                  <PlatformLink href={release.spotify}>Spotify</PlatformLink>
-                )}
-                <PlatformLink href={siteConfig.links.youtube}>
-                  YouTube
-                </PlatformLink>
-              </div>
-            </div>
-          </div>
-
-          <section className="mt-16 rounded-[30px] border border-white/10 bg-white/[0.025] p-4 sm:p-6 lg:mt-24">
-            <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-[9px] font-semibold uppercase tracking-[0.3em] text-red-400/70">
-                  Listen
-                </p>
-                <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em]">
-                  Play the release
-                </h2>
-              </div>
-              <p className="text-xs text-white/30">Powered by SoundCloud</p>
-            </div>
-            <iframe
-              title={`${release.title} on SoundCloud`}
-              src={soundCloudPlayer}
-              allow="autoplay"
-              loading="lazy"
-              className="h-[360px] w-full rounded-2xl border-0"
-            />
-          </section>
-
-          <nav
-            aria-label="More Evelasting releases"
-            className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between"
-          >
-            <Link
-              href="/#music"
-              className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/50 transition hover:text-white"
-            >
-              ← Back to discography
-            </Link>
-            <Link
-              href="/#contact"
-              className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/50 transition hover:text-white"
-            >
-              Follow Evelasting →
-            </Link>
-          </nav>
-        </article>
+        <ReleasePageContent release={release} />
 
         <footer className="flex flex-col gap-4 border-t border-white/10 py-8 text-[10px] uppercase tracking-[0.2em] text-white/25 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Evelasting</p>
