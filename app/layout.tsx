@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 
 import { siteConfig, socialProfiles } from "@/lib/site";
+import GoogleAnalytics from "./components/GoogleAnalytics";
 import PwaRegistration from "./components/PwaRegistration";
 import "./globals.css";
 
@@ -109,6 +110,7 @@ export default function RootLayout({
         </a>
         {children}
         <PwaRegistration />
+        <GoogleAnalytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(artistSchema) }}
