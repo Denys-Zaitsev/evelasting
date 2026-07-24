@@ -10,6 +10,7 @@ import { useLanguage } from "./LanguageContext";
 export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
@@ -27,6 +28,31 @@ export default function Navbar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMenuOpen(false);
+    };
+
+    document.body.classList.add("mobile-menu-open");
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.classList.remove("mobile-menu-open");
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMenuOpen]);
+
+  const sectionHref = (section: string) =>
+    pathname === "/" ? `#${section}` : `/#${section}`;
+
+  const navigation = [
+    { href: sectionHref("music"), label: t("music") },
+    { href: sectionHref("story"), label: t("story") },
+    { href: sectionHref("contact"), label: t("contact") },
+  ];
 
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (pathname !== "/") {
@@ -105,8 +131,10 @@ export default function Navbar() {
             text-white/65 md:flex
           "
         >
+          {navigation.map((item) => (
           <a
-            href="#music"
+            key={item.href}
+            href={item.href}
             className="
               group/nav relative py-2
               outline-none
@@ -115,7 +143,7 @@ export default function Navbar() {
               focus-visible:text-white
             "
           >
-            {t("music")}
+            {item.label}
 
             <span
               aria-hidden="true"
@@ -132,65 +160,11 @@ export default function Navbar() {
               "
             />
           </a>
-
-          <a
-            href="#story"
-            className="
-              group/nav relative py-2
-              outline-none
-              transition-colors duration-300
-              hover:text-white
-              focus-visible:text-white
-            "
-          >
-            {t("story")}
-
-            <span
-              aria-hidden="true"
-              className="
-                pointer-events-none absolute
-                bottom-0 left-0
-                h-px w-full
-                origin-left scale-x-0
-                bg-red-500
-                transition-transform duration-300
-                ease-[cubic-bezier(0.22,1,0.36,1)]
-                group-hover/nav:scale-x-100
-                group-focus-visible/nav:scale-x-100
-              "
-            />
-          </a>
-
-          <a
-            href="#contact"
-            className="
-              group/nav relative py-2
-              outline-none
-              transition-colors duration-300
-              hover:text-white
-              focus-visible:text-white
-            "
-          >
-            {t("contact")}
-
-            <span
-              aria-hidden="true"
-              className="
-                pointer-events-none absolute
-                bottom-0 left-0
-                h-px w-full
-                origin-left scale-x-0
-                bg-red-500
-                transition-transform duration-300
-                ease-[cubic-bezier(0.22,1,0.36,1)]
-                group-hover/nav:scale-x-100
-                group-focus-visible/nav:scale-x-100
-              "
-            />
-          </a>
+          ))}
         </nav>
 
-        <div className="ml-2 flex shrink-0 items-center rounded-full border border-white/10 bg-black/30 p-1 text-[10px] font-semibold tracking-[0.18em] text-white/45 backdrop-blur-xl">
+        <div className="ml-auto flex items-center gap-2 md:ml-2">
+        <div className="flex shrink-0 items-center rounded-full border border-white/10 bg-black/30 p-1 text-[10px] font-semibold tracking-[0.18em] text-white/45 backdrop-blur-xl">
           {(["en", "uk"] as const).map((item) => (
             <button key={item} type="button" onClick={() => {
               setLanguage(item);
@@ -202,6 +176,43 @@ export default function Navbar() {
             </button>
           ))}
         </div>
+        <button
+          type="button"
+          className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-black/35 text-white md:hidden"
+          aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation"
+          onClick={() => setIsMenuOpen((value) => !value)}
+        >
+          <span className="sr-only">{isMenuOpen ? "Close" : "Menu"}</span>
+          <span aria-hidden="true" className="relative block h-4 w-5">
+            <span className={`absolute left-0 top-0 h-px w-5 bg-current transition ${isMenuOpen ? "translate-y-[7px] rotate-45" : ""}`} />
+            <span className={`absolute left-0 top-[7px] h-px w-5 bg-current transition ${isMenuOpen ? "opacity-0" : ""}`} />
+            <span className={`absolute left-0 top-[14px] h-px w-5 bg-current transition ${isMenuOpen ? "-translate-y-[7px] -rotate-45" : ""}`} />
+          </span>
+        </button>
+        </div>
+      </div>
+
+      <div
+        id="mobile-navigation"
+        className={`border-t border-white/10 bg-black/95 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl transition md:hidden ${
+          isMenuOpen ? "visible opacity-100" : "invisible absolute w-full -translate-y-2 opacity-0"
+        }`}
+      >
+        <nav aria-label="Mobile navigation" className="mx-auto grid max-w-7xl gap-1">
+          {navigation.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={() => setIsMenuOpen(false)}
+              className="flex min-h-12 items-center justify-between rounded-xl px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white/75 transition hover:bg-white/[0.06] hover:text-white"
+            >
+              {item.label}
+              <span aria-hidden="true" className="text-red-400">↘</span>
+            </a>
+          ))}
+        </nav>
       </div>
     </header>
   );

@@ -137,7 +137,7 @@ export default async function ReleasePage({
   return (
     <main
       id="main-content"
-      className="relative min-h-screen overflow-hidden bg-[#050505] px-5 py-8 text-white sm:px-8 lg:px-12"
+      className="relative min-h-screen overflow-hidden bg-[#050505] px-4 py-5 text-white sm:px-8 sm:py-8 lg:px-12"
     >
       <div
         aria-hidden="true"
@@ -145,16 +145,16 @@ export default async function ReleasePage({
       />
 
       <div className="relative mx-auto max-w-6xl">
-        <header className="flex items-center justify-between border-b border-white/10 pb-7">
+        <header className="flex items-center justify-between gap-4 border-b border-white/10 pb-5 sm:pb-7">
           <Link
             href="/"
-            className="text-sm font-semibold tracking-[0.34em] transition-opacity hover:opacity-60"
+            className="text-xs font-semibold tracking-[0.26em] transition-opacity hover:opacity-60 sm:text-sm sm:tracking-[0.34em]"
           >
             EVELASTING
           </Link>
           <Link
             href="/#music"
-            className="rounded-full border border-white/15 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60 transition hover:border-white/35 hover:text-white"
+            className="inline-flex min-h-11 items-center rounded-full border border-white/15 px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-white/60 transition hover:border-white/35 hover:text-white sm:text-[10px] sm:tracking-[0.18em]"
           >
             All releases
           </Link>

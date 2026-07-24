@@ -151,9 +151,9 @@ export default function ReleasePageContent({
         className="soundcloud-engine"
       />
 
-      <article className="py-14 sm:py-20">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
-          <div className="relative mx-auto aspect-square w-full max-w-xl overflow-hidden rounded-[34px] border border-white/10 bg-[linear-gradient(135deg,#171717,#080808)] shadow-[0_40px_140px_rgba(0,0,0,0.72)]">
+      <article className="py-10 sm:py-20">
+        <div className="grid items-center gap-8 sm:gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+          <div className="relative mx-auto aspect-square w-full max-w-xl overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(135deg,#171717,#080808)] shadow-[0_40px_140px_rgba(0,0,0,0.72)] sm:rounded-[34px]">
             {artwork ? (
               // SoundCloud supplies the current release artwork at runtime.
               // eslint-disable-next-line @next/next/no-img-element
@@ -174,17 +174,17 @@ export default function ReleasePageContent({
             <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-red-400/80">
               Official release · {release.year}
             </p>
-            <h1 className="mt-5 text-4xl font-semibold leading-[0.95] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
+            <h1 className="mt-4 break-words text-[clamp(2.25rem,12vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.055em] sm:mt-5">
               {displayTitle}
             </h1>
             <p className="mt-5 text-xs font-semibold uppercase tracking-[0.24em] text-white/35">
               {release.artist} · {release.genre}
             </p>
-            <p className="mt-8 max-w-2xl text-base leading-8 text-white/55">
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-white/55 sm:mt-8 sm:text-base sm:leading-8">
               {release.description}
             </p>
 
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="mt-8 grid gap-3 min-[420px]:flex min-[420px]:flex-wrap">
               <PlatformLink href={soundCloudUrl} primary>
                 SoundCloud
               </PlatformLink>
@@ -198,7 +198,7 @@ export default function ReleasePageContent({
           </div>
         </div>
 
-        <section className="mt-16 rounded-[30px] border border-white/10 bg-white/[0.025] p-4 sm:p-6 lg:mt-24">
+        <section className="mt-12 rounded-[24px] border border-white/10 bg-white/[0.025] p-3 sm:mt-16 sm:rounded-[30px] sm:p-6 lg:mt-24">
           <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-[9px] font-semibold uppercase tracking-[0.3em] text-red-400/70">
@@ -217,7 +217,7 @@ export default function ReleasePageContent({
               src={soundCloudPlayer}
               allow="autoplay"
               loading="lazy"
-              className="h-[360px] w-full rounded-2xl border-0"
+              className="h-[280px] w-full rounded-2xl border-0 sm:h-[360px]"
             />
           ) : (
             <div className="grid h-40 place-items-center rounded-2xl border border-white/10 bg-black/30 px-6 text-center text-sm text-white/35">

@@ -140,7 +140,7 @@ export default function PrivacyPage() {
   return (
     <main
       id="main-content"
-      className="min-h-screen bg-[#050505] px-5 py-8 text-white sm:px-8 lg:px-12"
+      className="min-h-screen bg-[#050505] px-4 py-5 text-white sm:px-8 sm:py-8 lg:px-12"
     >
       <div
         aria-hidden="true"
@@ -148,22 +148,22 @@ export default function PrivacyPage() {
       />
 
       <div className="relative mx-auto max-w-4xl">
-        <header className="flex items-center justify-between border-b border-white/10 pb-7">
+        <header className="flex items-center justify-between gap-4 border-b border-white/10 pb-5 sm:pb-7">
           <Link
             href="/"
-            className="text-sm font-semibold tracking-[0.34em] transition-opacity hover:opacity-60"
+            className="text-xs font-semibold tracking-[0.26em] transition-opacity hover:opacity-60 sm:text-sm sm:tracking-[0.34em]"
           >
             EVELASTING
           </Link>
           <Link
             href="/"
-            className="rounded-full border border-white/15 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60 transition hover:border-white/35 hover:text-white"
+            className="inline-flex min-h-11 items-center rounded-full border border-white/15 px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-white/60 transition hover:border-white/35 hover:text-white sm:text-[10px] sm:tracking-[0.18em]"
           >
             Back to website
           </Link>
         </header>
 
-        <section className="py-16 sm:py-24">
+        <section className="py-12 sm:py-24">
           <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-red-400/75">
             Legal · Privacy
           </p>
@@ -184,7 +184,7 @@ export default function PrivacyPage() {
           {sections.map((section) => (
             <section
               key={section.title}
-              className="rounded-2xl border border-white/10 bg-white/[0.025] p-6 sm:p-8"
+              className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 sm:p-8"
             >
               <h2 className="text-lg font-semibold tracking-[-0.02em] sm:text-xl">
                 {section.title}
