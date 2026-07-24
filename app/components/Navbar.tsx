@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 import { useLanguage } from "./LanguageContext";
 
 export default function Navbar() {
@@ -191,7 +192,12 @@ export default function Navbar() {
 
         <div className="ml-2 flex shrink-0 items-center rounded-full border border-white/10 bg-black/30 p-1 text-[10px] font-semibold tracking-[0.18em] text-white/45 backdrop-blur-xl">
           {(["en", "uk"] as const).map((item) => (
-            <button key={item} type="button" onClick={() => setLanguage(item)} aria-pressed={language === item} className={`rounded-full px-2.5 py-2 sm:px-3 transition ${language === item ? "bg-white text-black" : "hover:text-white"}`}>
+            <button key={item} type="button" onClick={() => {
+              setLanguage(item);
+              trackAnalyticsEvent("language_change", {
+                language: item,
+              });
+            }} aria-pressed={language === item} className={`rounded-full px-2.5 py-2 sm:px-3 transition ${language === item ? "bg-white text-black" : "hover:text-white"}`}>
               {item === "en" ? "ENG" : "UA"}
             </button>
           ))}

@@ -3,17 +3,14 @@
 import Script from "next/script";
 import { useEffect, useState } from "react";
 
-const MEASUREMENT_ID = "G-RVTYHZS8Q2";
-const CONSENT_KEY = "evelasting-analytics-consent";
+import {
+  ANALYTICS_CONSENT_KEY,
+  GA_MEASUREMENT_ID,
+  initializeAnalytics,
+  trackAnalyticsEvent,
+} from "@/lib/analytics";
 
 type Consent = "accepted" | "declined" | null;
-
-declare global {
-  interface Window {
-    dataLayer: unknown[];
-    gtag?: (...args: unknown[]) => void;
-  }
-}
 
 function deleteAnalyticsCookies() {
   document.cookie.split(";").forEach((cookie) => {
@@ -33,7 +30,7 @@ export default function GoogleAnalytics() {
 
   useEffect(() => {
     const hydrationTimer = window.setTimeout(() => {
-      const savedConsent = localStorage.getItem(CONSENT_KEY);
+      const savedConsent = localStorage.getItem(ANALYTICS_CONSENT_KEY);
 
       if (savedConsent === "accepted" || savedConsent === "declined") {
         setConsent(savedConsent);
@@ -45,31 +42,62 @@ export default function GoogleAnalytics() {
     return () => window.clearTimeout(hydrationTimer);
   }, []);
 
+  useEffect(() => {
+    if (consent !== "accepted") return;
+
+    initializeAnalytics();
+
+    const trackLinkClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const link = target.closest<HTMLAnchorElement>("a[href]");
+      if (!link) return;
+
+      const href = link.getAttribute("href") || "";
+      const label =
+        link.getAttribute("aria-label") || link.textContent?.trim() || "link";
+
+      if (href.startsWith("#")) {
+        trackAnalyticsEvent("navigation_click", {
+          section: href.slice(1) || "top",
+          link_text: label.slice(0, 100),
+        });
+        return;
+      }
+
+      if (
+        link.href &&
+        (link.origin !== window.location.origin || href.startsWith("mailto:"))
+      ) {
+        trackAnalyticsEvent("outbound_click", {
+          destination: link.hostname || "email",
+          link_text: label.slice(0, 100),
+          link_url: link.href,
+        });
+      }
+    };
+
+    document.addEventListener("click", trackLinkClick);
+    return () => document.removeEventListener("click", trackLinkClick);
+  }, [consent]);
+
   function saveConsent(nextConsent: Exclude<Consent, null>) {
-    localStorage.setItem(CONSENT_KEY, nextConsent);
+    localStorage.setItem(ANALYTICS_CONSENT_KEY, nextConsent);
     setConsent(nextConsent);
     setIsPreferencesOpen(false);
+
+    if (nextConsent === "accepted") {
+      initializeAnalytics();
+    }
 
     if (nextConsent === "declined") {
       window.gtag?.("consent", "update", {
         analytics_storage: "denied",
       });
       deleteAnalyticsCookies();
+      window.evelastingGaConfigured = false;
     }
-  }
-
-  function configureAnalytics() {
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
-    };
-    window.gtag("js", new Date());
-    window.gtag("consent", "update", {
-      analytics_storage: "granted",
-    });
-    window.gtag("config", MEASUREMENT_ID, {
-      anonymize_ip: true,
-    });
   }
 
   const shouldShowDialog =
@@ -80,9 +108,10 @@ export default function GoogleAnalytics() {
       {consent === "accepted" && (
         <Script
           id="google-analytics"
-          src={`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`}
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
           strategy="afterInteractive"
-          onLoad={configureAnalytics}
+          onLoad={initializeAnalytics}
+          onReady={initializeAnalytics}
         />
       )}
 

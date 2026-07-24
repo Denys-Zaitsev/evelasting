@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 
+import { trackAnalyticsEvent } from "@/lib/analytics";
 import { usePlayer } from "./PlayerContext";
 import { useLanguage } from "./LanguageContext";
 
@@ -276,6 +277,9 @@ export default function SoundCloudPlayer() {
   const releaseColorAnimationRef = useRef<number | null>(null);
   const playerShellRef = useRef<HTMLDivElement>(null);
   const suppressPlayerToggleRef = useRef(false);
+  const trackedTrackRef = useRef<string | null>(null);
+  const trackedStartRef = useRef(false);
+  const trackedMilestonesRef = useRef<Set<number>>(new Set());
 
   const {
     playRequested,
@@ -706,6 +710,22 @@ export default function SoundCloudPlayer() {
       setIsPlaying(true);
       setPlaying(true);
       refreshCurrentTrack();
+      widget.getCurrentSound((sound) => {
+        const trackId = String(sound.id ?? sound.permalink_url ?? sound.title);
+        if (trackedTrackRef.current !== trackId) {
+          trackedTrackRef.current = trackId;
+          trackedStartRef.current = false;
+          trackedMilestonesRef.current = new Set();
+        }
+        if (trackedStartRef.current) return;
+        trackedStartRef.current = true;
+        trackAnalyticsEvent("audio_start", {
+          track_id: trackId,
+          track_title: sound.title || "Unknown release",
+          artist: sound.user?.username || "Evelasting",
+          duration_seconds: Math.round((sound.duration || 0) / 1000),
+        });
+      });
     });
 
     widget.bind(events.PAUSE, () => {
@@ -715,12 +735,39 @@ export default function SoundCloudPlayer() {
 
     widget.bind(events.FINISH, () => {
       setPosition(0);
+      widget.getCurrentSound((sound) => {
+        trackAnalyticsEvent("audio_complete", {
+          track_id: String(sound.id ?? sound.permalink_url ?? sound.title),
+          track_title: sound.title || "Unknown release",
+        });
+        trackedStartRef.current = false;
+        trackedMilestonesRef.current = new Set();
+      });
       window.setTimeout(refreshCurrentTrack, 180);
     });
 
     widget.bind(events.PLAY_PROGRESS, (event) => {
       if (typeof event?.currentPosition === "number") {
         setPosition(event.currentPosition);
+      }
+
+      if (typeof event?.relativePosition === "number") {
+        const percent = Math.floor(event.relativePosition * 100);
+        const milestone = [25, 50, 75].find(
+          (value) =>
+            percent >= value && !trackedMilestonesRef.current.has(value),
+        );
+
+        if (milestone) {
+          trackedMilestonesRef.current.add(milestone);
+          widget.getCurrentSound((sound) => {
+            trackAnalyticsEvent("audio_progress", {
+              track_id: String(sound.id ?? sound.permalink_url ?? sound.title),
+              track_title: sound.title || "Unknown release",
+              percent: milestone,
+            });
+          });
+        }
       }
     });
 
