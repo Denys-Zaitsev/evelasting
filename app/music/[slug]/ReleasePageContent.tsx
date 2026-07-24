@@ -80,8 +80,10 @@ function PlatformLink({
 
 export default function ReleasePageContent({
   release,
+  trackIndex,
 }: {
   release: Release;
+  trackIndex: number;
 }) {
   const engineRef = useRef<HTMLIFrameElement>(null);
   const widgetRef = useRef<SoundCloudWidget | null>(null);
@@ -97,25 +99,28 @@ export default function ReleasePageContent({
 
     widget.bind(sdk.Widget.Events.READY, () => {
       widget.getSounds((sounds) => {
+        const exactTrack = sounds[trackIndex];
         const expected = normalizeTitle(release.title);
-        const match = sounds.find((sound) => {
+        const titleMatch = sounds.find((sound) => {
           const candidate = normalizeTitle(sound.title || "");
-          return (
+          return Boolean(
             candidate &&
-            (candidate === expected ||
-              candidate.includes(expected) ||
-              expected.includes(candidate))
+              (candidate === expected ||
+                candidate.includes(expected) ||
+                expected.includes(candidate)),
           );
         });
+        const match = exactTrack || titleMatch;
 
         setLiveTrack(match || null);
         setCatalogReady(true);
       });
     });
-  }, [release.title]);
+  }, [release.title, trackIndex]);
 
   const artwork = improveArtwork(liveTrack?.artwork_url);
   const soundCloudUrl = liveTrack?.permalink_url || siteConfig.links.soundcloud;
+  const displayTitle = liveTrack?.title || release.title;
   const soundCloudPlayer = liveTrack?.permalink_url
     ? "https://w.soundcloud.com/player/?" +
       new URLSearchParams({
@@ -159,7 +164,7 @@ export default function ReleasePageContent({
               />
             ) : (
               <div className="flex h-full items-center justify-center px-8 text-center text-sm font-semibold uppercase tracking-[0.28em] text-white/20">
-                {catalogReady ? release.title : "Loading artwork"}
+                {catalogReady ? displayTitle : "Loading artwork"}
               </div>
             )}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.07] via-transparent to-black/35" />
@@ -170,7 +175,7 @@ export default function ReleasePageContent({
               Official release · {release.year}
             </p>
             <h1 className="mt-5 text-4xl font-semibold leading-[0.95] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
-              {release.title}
+              {displayTitle}
             </h1>
             <p className="mt-5 text-xs font-semibold uppercase tracking-[0.24em] text-white/35">
               {release.artist} · {release.genre}

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
 import {
   getReleaseBySlug,
@@ -12,9 +11,10 @@ import ReleasePageContent from "./ReleasePageContent";
 
 type ReleasePageProps = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ track?: string | string[] }>;
 };
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 export function generateStaticParams() {
   return releases.map((release) => ({ slug: release.slug }));
@@ -97,11 +97,42 @@ function ReleaseSchema({ release }: { release: Release }) {
   );
 }
 
-export default async function ReleasePage({ params }: ReleasePageProps) {
-  const { slug } = await params;
-  const release = getReleaseBySlug(slug);
+function titleFromSlug(slug: string) {
+  return slug
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
 
-  if (!release) notFound();
+export default async function ReleasePage({
+  params,
+  searchParams,
+}: ReleasePageProps) {
+  const { slug } = await params;
+  const query = await searchParams;
+  const knownRelease = getReleaseBySlug(slug);
+  const rawTrack = Array.isArray(query.track) ? query.track[0] : query.track;
+  const parsedTrack = Number.parseInt(rawTrack || "", 10);
+  const fallbackTrackIndex = Number.isFinite(parsedTrack) ? parsedTrack : 0;
+  const release: Release =
+    knownRelease ||
+    ({
+      id: fallbackTrackIndex + 1000,
+      slug,
+      title: titleFromSlug(slug),
+      artist: "Evelasting",
+      year: new Date().getFullYear(),
+      genre: "Phonk",
+      description:
+        "An official Evelasting release from the current SoundCloud catalog.",
+      cover: "/og/evelasting-og.jpg",
+      soundcloud: siteConfig.links.soundcloud,
+      playlistIndex: fallbackTrackIndex,
+    } satisfies Release);
+  const trackIndex = Number.isFinite(parsedTrack)
+    ? Math.max(0, parsedTrack)
+    : release.playlistIndex;
 
   return (
     <main
@@ -129,7 +160,7 @@ export default async function ReleasePage({ params }: ReleasePageProps) {
           </Link>
         </header>
 
-        <ReleasePageContent release={release} />
+        <ReleasePageContent release={release} trackIndex={trackIndex} />
 
         <footer className="flex flex-col gap-4 border-t border-white/10 py-8 text-[10px] uppercase tracking-[0.2em] text-white/25 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Evelasting</p>

@@ -9,6 +9,7 @@ export type Release = {
   cover: string;
   soundcloud: string;
   spotify?: string;
+  playlistIndex: number;
 };
 
 export const releases: Release[] = [
@@ -25,6 +26,7 @@ export const releases: Release[] = [
     soundcloud: "https://soundcloud.com/evelasting1",
     spotify:
       "https://open.spotify.com/track/2gsqaDLcvQS6FAtaZbpHhL",
+    playlistIndex: 9,
   },
   {
     id: 2,
@@ -37,6 +39,7 @@ export const releases: Release[] = [
       "A nocturnal blend of soft atmosphere, urban motion and a restrained phonk pulse.",
     cover: "/images/Dreamy Urban Phonk.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
+    playlistIndex: 1,
   },
   {
     id: 3,
@@ -49,6 +52,7 @@ export const releases: Release[] = [
       "A spacious, melodic track built around the idea that sound can outlive the moment that created it.",
     cover: "/images/Eternity of Sound.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
+    playlistIndex: 8,
   },
   {
     id: 4,
@@ -61,6 +65,7 @@ export const releases: Release[] = [
       "Cold space, distant light and a heavy low end shape one of Evelasting's darkest atmospheres.",
     cover: "/images/Darkness Of Space.png",
     soundcloud: "https://soundcloud.com/evelasting1",
+    playlistIndex: 7,
   },
   {
     id: 5,
@@ -73,6 +78,7 @@ export const releases: Release[] = [
       "An aggressive, high-pressure phonk cut designed around momentum and impact.",
     cover: "/images/Rampage 185.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
+    playlistIndex: 6,
   },
   {
     id: 6,
@@ -85,6 +91,7 @@ export const releases: Release[] = [
       "A dramatic collision of distorted energy, tension and the recurring theme of eternity.",
     cover: "/images/Blood Of The Eternity.png",
     soundcloud: "https://soundcloud.com/evelasting1",
+    playlistIndex: 4,
   },
   {
     id: 7,
@@ -97,6 +104,7 @@ export const releases: Release[] = [
       "Raw percussion and fractured textures turn WRACK into a compact burst of controlled chaos.",
     cover: "/images/WRACK.png",
     soundcloud: "https://soundcloud.com/evelasting1",
+    playlistIndex: 3,
   },
   {
     id: 8,
@@ -109,6 +117,7 @@ export const releases: Release[] = [
       "A direct and energetic phonk statement with a sharp hook and club-focused movement.",
     cover: "/images/yhhb-phonk.png",
     soundcloud: "https://soundcloud.com/evelasting1",
+    playlistIndex: 2,
   },
   {
     id: 9,
@@ -123,6 +132,7 @@ export const releases: Release[] = [
     soundcloud: "https://soundcloud.com/evelasting1",
     spotify:
       "https://open.spotify.com/track/0FwFtQLezEBeTdFPaappOe",
+    playlistIndex: 10,
   },
 ];
 
@@ -149,4 +159,8 @@ export function getReleaseByTitle(title: string) {
       normalizedReleaseTitle.includes(normalizedTitle)
     );
   });
+}
+
+export function slugifyReleaseTitle(title: string) {
+  return normalizeReleaseTitle(title).replace(/\s+/g, "-") || "release";
 }
