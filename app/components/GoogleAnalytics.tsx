@@ -161,7 +161,7 @@ export default function GoogleAnalytics() {
         <button
           type="button"
           onClick={() => setIsPreferencesOpen(true)}
-          className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-3 z-[90] min-h-10 rounded-full border border-white/15 bg-black/75 px-3 py-1.5 text-[11px] font-medium text-white/60 backdrop-blur transition hover:border-white/35 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="cookie-preferences-button fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-3 z-[90] min-h-10 rounded-full border border-white/15 bg-black/75 px-3 py-1.5 text-[11px] font-medium text-white/60 backdrop-blur transition hover:border-white/35 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           Cookies
         </button>

@@ -209,7 +209,12 @@ export default function Navbar() {
               className="flex min-h-12 items-center justify-between rounded-xl px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white/75 transition hover:bg-white/[0.06] hover:text-white"
             >
               {item.label}
-              <span aria-hidden="true" className="text-red-400">↘</span>
+              <span aria-hidden="true" className="text-red-400">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 7h10v10" />
+                  <path d="M7 17 17 7" />
+                </svg>
+              </span>
             </a>
           ))}
         </nav>
