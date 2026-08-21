@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   AnimatePresence,
   motion,
   useReducedMotion,
 } from "motion/react";
 import { useLanguage } from "../LanguageContext";
+import LazyAutoplayVideo from "../LazyAutoplayVideo";
 
 
 const processCaptions = [
@@ -18,7 +19,6 @@ const processCaptions = [
 ] as const;
 
 export default function StoryVideo() {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const { t } = useLanguage();
 
   const [currentTime, setCurrentTime] = useState(0);
@@ -34,16 +34,6 @@ export default function StoryVideo() {
       ) ?? processCaptions[0]
     );
   }, [currentTime]);
-
-  function handleTimeUpdate() {
-    const video = videoRef.current;
-
-    if (!video) {
-      return;
-    }
-
-    setCurrentTime(video.currentTime);
-  }
 
   return (
     <section
@@ -128,15 +118,11 @@ export default function StoryVideo() {
               transformOrigin: "center center",
             }}
           >
-            <video
-              ref={videoRef}
+            <LazyAutoplayVideo
               src="/story/midi-process5.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              onTimeUpdate={handleTimeUpdate}
+              onTimeUpdate={(event) =>
+                setCurrentTime(event.currentTarget.currentTime)
+              }
               className="absolute inset-0 h-full w-full object-cover"
               style={{
                 objectPosition: "center 46%",

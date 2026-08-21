@@ -1516,10 +1516,11 @@ body.mobile-menu-open { overflow: hidden; }
 }
 
 @media (max-width: 640px) {
-  .hero-orbit { width: 88vw; filter: blur(90px); }
-  .hero-light-beam { width: 27%; opacity: .55; }
+  .hero-orbit { width: 88vw; filter: none; opacity: .18; }
+  .hero-light-beam { display: none; }
   .section-transition { height: 72px; margin-block: -36px; }
   .section-transition span { font-size: 8px; letter-spacing: .2em; }
+  .story-section-soft article > div { will-change: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
