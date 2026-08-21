@@ -45,6 +45,7 @@ export default function LazyAutoplayVideo({
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const mobileViewport = window.matchMedia("(max-width: 767px)").matches;
     const constrainedConnection =
       connection?.saveData === true ||
       connection?.effectiveType === "slow-2g" ||
@@ -58,7 +59,10 @@ export default function LazyAutoplayVideo({
     const animationFrame = window.requestAnimationFrame(() => {
       if (!cancelled) {
         setAllowPlayback(
-          !reducedMotion && !constrainedConnection && !constrainedHardware,
+          !mobileViewport &&
+            !reducedMotion &&
+            !constrainedConnection &&
+            !constrainedHardware,
         );
       }
     });

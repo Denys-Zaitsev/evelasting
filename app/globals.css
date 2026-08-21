@@ -1521,6 +1521,12 @@ body.mobile-menu-open { overflow: hidden; }
   .section-transition { height: 72px; margin-block: -36px; }
   .section-transition span { font-size: 8px; letter-spacing: .2em; }
   .story-section-soft article > div { will-change: auto; }
+  .player-spectrum.is-active i,
+  .floating-player-mini-status.is-playing i { animation: none; }
+  .custom-player-pointer-light,
+  .custom-player-particles,
+  .music-orbit,
+  .story-orbit { display: none !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
