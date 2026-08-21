@@ -76,7 +76,7 @@ export default function StorySection() {
                 delay: 0.06,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="mt-7 text-5xl font-bold tracking-[-0.06em] text-white sm:text-6xl md:text-8xl lg:text-[6.6rem] lg:leading-[0.92]"
+              className="story-ending-title mt-7 text-5xl font-bold tracking-[-0.06em] text-white sm:text-6xl md:text-8xl lg:text-[6.6rem] lg:leading-[0.92]"
             >
               {t("endingTitle1")}
               <span className="block text-red-400">{t("endingTitle2")}</span>

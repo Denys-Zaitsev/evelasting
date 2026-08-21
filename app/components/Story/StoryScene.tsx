@@ -50,7 +50,7 @@ export default function StoryScene({
         amount: 0.38,
         margin: "-10% 0px -10% 0px",
       }}
-      className="relative grid min-h-[48vh] items-center overflow-visible py-10 md:min-h-[58vh] md:grid-cols-2 md:py-14"
+      className="story-scene relative grid min-h-[48vh] items-center overflow-visible py-10 md:min-h-[58vh] md:grid-cols-2 md:py-14"
     >
       {scene.media &&
         (isVerticalVideo ? (
@@ -125,7 +125,7 @@ export default function StoryScene({
             </p>
           </div>
 
-          <h3 className="mt-6 max-w-xl text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl md:text-5xl md:leading-[1.04]">
+          <h3 className="story-scene-title mt-6 max-w-xl text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl md:text-5xl md:leading-[1.04]">
             {localize(scene.title, language)}
           </h3>
 

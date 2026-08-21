@@ -22,7 +22,7 @@ export default function HeroLogo({ shouldReduceMotion }: HeroLogoProps) {
           delay: 0.28,
           ease: [0.16, 1, 0.3, 1],
         }}
-        className="relative mx-auto flex w-[min(96vw,1500px)] items-center justify-center"
+        className="relative mx-auto flex w-[min(88vw,1500px)] items-center justify-center sm:w-[min(96vw,1500px)]"
       >
         <Image
           src="/evelasting-logo.png"
@@ -30,7 +30,7 @@ export default function HeroLogo({ shouldReduceMotion }: HeroLogoProps) {
           width={1800}
           height={450}
           priority
-          sizes="(max-width: 640px) 96vw, (max-width: 1280px) 90vw, 1500px"
+          sizes="(max-width: 640px) 88vw, (max-width: 1280px) 90vw, 1500px"
           className="hero-logo mx-auto h-auto w-full select-none object-contain"
         />
       </motion.div>

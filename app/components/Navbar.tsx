@@ -69,7 +69,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`
+      className={`site-header
         fixed left-0 top-0 z-50 w-full
         border-b transition-[background-color,border-color,backdrop-filter]
         duration-500
@@ -81,7 +81,7 @@ export default function Navbar() {
       `}
     >
       <div
-        className="
+        className="site-header-inner
           mx-auto flex max-w-7xl
           items-center justify-between
           px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6
@@ -91,7 +91,7 @@ export default function Navbar() {
           href="/"
           onClick={handleLogoClick}
           aria-label="Return to the Evelasting homepage"
-          className="
+          className="site-wordmark
             group/logo relative
             text-sm font-semibold tracking-[0.26em] sm:text-base sm:tracking-[0.34em] lg:text-lg lg:tracking-[0.4em]
             text-white outline-none
@@ -163,8 +163,8 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2 md:ml-2">
-        <div className="flex shrink-0 items-center rounded-full border border-white/10 bg-black/30 p-1 text-[10px] font-semibold tracking-[0.18em] text-white/45 backdrop-blur-xl">
+        <div className="site-header-actions ml-auto flex items-center gap-2 md:ml-2">
+        <div className="language-switch flex shrink-0 items-center rounded-full border border-white/10 bg-black/30 p-1 text-[10px] font-semibold tracking-[0.18em] text-white/45 backdrop-blur-xl">
           {(["en", "uk"] as const).map((item) => (
             <button key={item} type="button" onClick={() => {
               setLanguage(item);
@@ -178,7 +178,7 @@ export default function Navbar() {
         </div>
         <button
           type="button"
-          className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-black/35 text-white md:hidden"
+          className="mobile-menu-button grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-black/35 text-white md:hidden"
           aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
           aria-expanded={isMenuOpen}
           aria-controls="mobile-navigation"
