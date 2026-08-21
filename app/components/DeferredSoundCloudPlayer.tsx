@@ -16,20 +16,42 @@ export default function DeferredSoundCloudPlayer() {
     musicIsNear || playRequested > 0 || toggleRequested > 0;
 
   useEffect(() => {
-    const musicSection = document.getElementById("music");
-    if (!musicSection || !("IntersectionObserver" in window)) return;
+    if (!("IntersectionObserver" in window)) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry?.isIntersecting) return;
-        setMusicIsNear(true);
-        observer.disconnect();
-      },
-      { rootMargin: "120px 0px" },
-    );
+    let intersectionObserver: IntersectionObserver | null = null;
 
-    observer.observe(musicSection);
-    return () => observer.disconnect();
+    const observeMusicSection = () => {
+      const musicSection = document.getElementById("music");
+      if (!musicSection) return false;
+
+      intersectionObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry?.isIntersecting) return;
+          setMusicIsNear(true);
+          intersectionObserver?.disconnect();
+        },
+        { rootMargin: "120px 0px" },
+      );
+
+      intersectionObserver.observe(musicSection);
+      return true;
+    };
+
+    if (observeMusicSection()) {
+      return () => intersectionObserver?.disconnect();
+    }
+
+    const mutationObserver = new MutationObserver(() => {
+      if (!observeMusicSection()) return;
+      mutationObserver.disconnect();
+    });
+
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      mutationObserver.disconnect();
+      intersectionObserver?.disconnect();
+    };
   }, []);
 
   return shouldLoad ? <SoundCloudPlayer /> : null;

@@ -1,15 +1,11 @@
-import FinalSection from "./components/FinalSection";
-import Footer from "./components/Footer";
 import Hero from "./components/Hero/Hero";
-import Music from "./components/Music";
 import Navbar from "./components/Navbar";
 import { PlayerProvider } from "./components/PlayerContext";
 import { LanguageProvider } from "./components/LanguageContext";
 import PerformanceMotionConfig from "./components/PerformanceMotionConfig";
 import Preloader from "./components/Preloader";
-import Story from "./components/Story";
 import DeferredSoundCloudPlayer from "./components/DeferredSoundCloudPlayer";
-import SectionTransition from "./components/SectionTransition";
+import DeferredHomeContent from "./components/DeferredHomeContent";
 
 export default function Home() {
   return (
@@ -21,17 +17,7 @@ export default function Home() {
         <Navbar />
 
         <Hero />
-        <SectionTransition labelKey="enterSound" />
-
-        <Music />
-        <SectionTransition labelKey="behindMusic" />
-
-        <Story />
-        <SectionTransition labelKey="nextChapter" />
-
-        <FinalSection />
-
-        <Footer />
+        <DeferredHomeContent />
 
         <DeferredSoundCloudPlayer />
       </main>

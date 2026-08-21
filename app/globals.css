@@ -2058,3 +2058,24 @@ button, a, input { min-width: 0; }
   .release-library-grid { gap: 12px; }
   .floating-player-shell:not(.floating-player-collapsed) { width: calc(100vw - 16px) !important; left: 8px !important; right: 8px !important; }
 }
+
+/* Mobile safe mode: avoid iOS Safari tab reloads caused by large GPU layers. */
+@media (max-width: 767px) {
+  .site-preloader { display: none !important; }
+  .hero-core-glow,
+  .hero-particles,
+  .hero-orbit,
+  .hero-light-beam,
+  .music-orbit,
+  .story-orbit,
+  .pointer-light { display: none !important; }
+
+  .hero-logo { filter: none !important; }
+  nav,
+  .mobile-content-trigger,
+  .music-section,
+  .story-section {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}

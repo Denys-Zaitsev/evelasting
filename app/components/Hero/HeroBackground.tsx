@@ -30,7 +30,7 @@ function BackgroundParticles({
   }
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="hero-particles absolute inset-0 overflow-hidden">
       {particles.map((particle) => (
         <motion.span
           key={particle.id}
@@ -87,7 +87,7 @@ export default function HeroBackground({
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute left-1/2 top-[52%] h-[760px] w-[760px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[220px] transition-colors duration-1000 md:h-[920px] md:w-[920px]"
+        className="hero-core-glow absolute left-1/2 top-[52%] h-[760px] w-[760px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[220px] transition-colors duration-1000 md:h-[920px] md:w-[920px]"
         style={{ backgroundColor: hasActiveTrack ? "rgb(var(--hero-accent) / 0.52)" : "rgba(69, 10, 10, 0.45)" }}
       />
 
