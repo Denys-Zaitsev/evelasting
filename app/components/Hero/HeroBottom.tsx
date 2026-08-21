@@ -24,7 +24,7 @@ export default function HeroBottom({ shouldReduceMotion }: HeroBottomProps) {
   };
 
   return (
-    <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center justify-items-center gap-5 pb-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-6 md:gap-12 lg:gap-16 [@media(max-height:760px)]:gap-4">
+    <div className="hero-bottom mx-auto grid w-full max-w-6xl grid-cols-1 items-center justify-items-center gap-5 pb-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-6 md:gap-12 lg:gap-16 [@media(max-height:760px)]:gap-4">
       <motion.div initial={shouldReduceMotion ? false : { opacity: 0, x: -22 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.8, ease: HOVER_EASE }} className="order-2 min-w-0 sm:order-1 sm:justify-self-end">
         <div className="group flex cursor-default flex-col items-center text-center sm:items-end sm:text-right">
           <p className="max-w-full text-[clamp(1.7rem,7.5vw,3.65rem)] font-semibold leading-none tracking-[-0.065em] text-white">

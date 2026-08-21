@@ -8,6 +8,14 @@ import {
   type SyntheticEvent,
 } from "react";
 
+type NavigatorWithPerformanceHints = Navigator & {
+  connection?: {
+    effectiveType?: string;
+    saveData?: boolean;
+  };
+  deviceMemory?: number;
+};
+
 type LazyAutoplayVideoProps = {
   src: string;
   className?: string;
@@ -27,42 +35,90 @@ export default function LazyAutoplayVideo({
 }: LazyAutoplayVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [isNearViewport, setIsNearViewport] = useState(false);
+  const [allowPlayback, setAllowPlayback] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const navigatorWithHints = navigator as NavigatorWithPerformanceHints;
+    const connection = navigatorWithHints.connection;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const mobileViewport = window.matchMedia("(max-width: 767px)").matches;
+    const constrainedConnection =
+      connection?.saveData === true ||
+      connection?.effectiveType === "slow-2g" ||
+      connection?.effectiveType === "2g";
+    const constrainedHardware =
+      (navigatorWithHints.deviceMemory !== undefined &&
+        navigatorWithHints.deviceMemory <= 2) ||
+      (navigator.hardwareConcurrency !== undefined &&
+        navigator.hardwareConcurrency <= 2);
+
+    const animationFrame = window.requestAnimationFrame(() => {
+      if (!cancelled) {
+        setAllowPlayback(
+          !mobileViewport &&
+            !reducedMotion &&
+            !constrainedConnection &&
+            !constrainedHardware,
+        );
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(animationFrame);
+    };
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || shouldLoad) return;
+    if (!video || !allowPlayback) return;
 
     if (!("IntersectionObserver" in window)) {
-      setShouldLoad(true);
-      return;
+      const animationFrame = requestAnimationFrame(() => {
+        setShouldLoad(true);
+        setIsNearViewport(true);
+      });
+      return () => cancelAnimationFrame(animationFrame);
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry?.isIntersecting) return;
-        setShouldLoad(true);
-        observer.disconnect();
+        const isVisible = entry?.isIntersecting === true;
+        setIsNearViewport(isVisible);
+
+        if (isVisible) {
+          setShouldLoad(true);
+        }
       },
-      { rootMargin: "700px 0px" },
+      { rootMargin: "400px 0px" },
     );
 
     observer.observe(video);
     return () => observer.disconnect();
-  }, [shouldLoad]);
+  }, [allowPlayback]);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !shouldLoad) return;
+
+    if (!isNearViewport) {
+      video.pause();
+      return;
+    }
+
     void video.play().catch(() => {
       // Autoplay can be blocked by a user/browser preference. The visual remains optional.
     });
-  }, [shouldLoad]);
+  }, [isNearViewport, shouldLoad]);
 
   return (
     <video
       ref={videoRef}
       src={shouldLoad ? src : undefined}
-      autoPlay={shouldLoad}
       muted
       loop
       playsInline

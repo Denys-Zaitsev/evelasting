@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
+import LazyAutoplayVideo from "../LazyAutoplayVideo";
 import type { StoryMedia as StoryMediaType } from "./storyData";
 
 type StoryVerticalVideoProps = {
@@ -102,13 +103,7 @@ export default function StoryVerticalVideo({
             maskSize: "100% 100%",
           }}
         >
-          <motion.video
-            src={media.src}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
+          <motion.div
             animate={
               prefersReducedMotion
                 ? {
@@ -129,11 +124,16 @@ export default function StoryVerticalVideo({
             }}
             className="absolute inset-0 h-full w-full object-cover"
             style={{
-              objectPosition: media.objectPosition ?? "center",
               opacity: desktopOpacity,
               willChange: "transform",
             }}
-          />
+          >
+            <LazyAutoplayVideo
+              src={media.src}
+              className="h-full w-full object-cover"
+              style={{ objectPosition: media.objectPosition ?? "center" }}
+            />
+          </motion.div>
 
           {/* Общее затемнение */}
           <div className="pointer-events-none absolute inset-0 bg-black/10" />
@@ -226,13 +226,8 @@ export default function StoryVerticalVideo({
           `,
         }}
       >
-        <video
+        <LazyAutoplayVideo
           src={media.src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
           className="absolute inset-0 h-full w-full object-cover"
           style={{
             objectPosition: media.objectPosition ?? "center",

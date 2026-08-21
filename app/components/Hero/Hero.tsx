@@ -24,7 +24,7 @@ export default function Hero() {
       <div
         className="
           relative z-10 mx-auto grid h-full w-full max-w-[1700px]
-          min-h-[100svh] grid-rows-[72px_96px_minmax(220px,1fr)_auto_28px] py-[env(safe-area-inset-top)]
+          min-h-[100svh] grid-rows-[72px_112px_minmax(180px,1fr)_auto_20px] py-[env(safe-area-inset-top)]
           sm:grid-rows-[72px_100px_minmax(260px,1fr)_190px_36px]
           [@media(max-height:760px)]:grid-rows-[58px_76px_minmax(190px,1fr)_146px_18px]
           [@media(min-height:1000px)]:grid-rows-[78px_112px_minmax(300px,1fr)_215px_52px]

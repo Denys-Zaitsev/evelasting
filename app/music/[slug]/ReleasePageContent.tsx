@@ -73,7 +73,21 @@ function PlatformLink({
           : "border-white/15 bg-white/[0.035] text-white/65 hover:border-white/35 hover:text-white"
       }`}
     >
-      {children} <span aria-hidden="true">↗</span>
+      {children}
+      <svg
+        aria-hidden="true"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M7 17 17 7" />
+        <path d="M8 7h9v9" />
+      </svg>
     </a>
   );
 }

@@ -18,7 +18,7 @@ const platforms = [
 
 export default function FinalSection(){
  const reduced=useReducedMotion(); const {t}=useLanguage();
- return <section id="contact" className="group/contact relative isolate overflow-hidden border-t border-white/10 bg-black px-6 py-24 md:px-12 md:py-36">
+ return <section id="contact" className="contact-section group/contact relative isolate overflow-hidden border-t border-white/10 bg-black px-6 py-24 md:px-12 md:py-36">
   <div aria-hidden className="pointer-events-none absolute inset-0 -z-30 overflow-hidden bg-black">
    <Image src="/images/final/workspace.jpg" alt="" fill sizes="100vw" priority={false} className="object-cover object-[54%_48%] brightness-[.34] contrast-[1.06] saturate-[.82] blur-[1px] transition-transform duration-[2400ms] ease-out group-hover/contact:scale-[1.025]"/>
   </div>
@@ -38,10 +38,10 @@ export default function FinalSection(){
 
    <div className="mt-16 md:mt-24">
     <p className="text-center text-[10px] uppercase tracking-[.34em] text-white/35">{t("availableOn")}</p>
-    <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {platforms.map((platform,index)=><motion.a key={platform.name} href={platform.href} target={platform.href.startsWith("mailto:")?undefined:"_blank"} rel={platform.href.startsWith("mailto:")?undefined:"noreferrer"} initial={{opacity:0,y:24}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.25}} transition={{duration:.65,delay:index*.045,ease:[.22,1,.36,1]}} className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[.025] p-6 transition duration-500 hover:-translate-y-1 hover:border-red-500/40 hover:bg-white/[.05]">
+    <div className="contact-platform-grid mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {platforms.map((platform,index)=><motion.a key={platform.name} href={platform.href} target={platform.href.startsWith("mailto:")?undefined:"_blank"} rel={platform.href.startsWith("mailto:")?undefined:"noreferrer"} initial={{opacity:0,y:24}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.25}} transition={{duration:.65,delay:index*.045,ease:[.22,1,.36,1]}} className="contact-platform-card group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[.025] p-6 transition duration-500 hover:-translate-y-1 hover:border-red-500/40 hover:bg-white/[.05]">
        <div className="absolute inset-0 translate-y-full bg-gradient-to-t from-red-700/10 to-transparent transition-transform duration-700 group-hover:translate-y-0"/>
-       <div className="relative flex items-end justify-between gap-5"><div><p className="text-[10px] uppercase tracking-[.24em] text-red-400/80">{t(platform.key)}</p><h3 className="mt-3 text-2xl font-semibold tracking-[-.035em] text-white">{platform.name}</h3></div><span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/15 text-white/65 transition duration-500 group-hover:border-red-500/50 group-hover:bg-red-600 group-hover:text-white">↗</span></div>
+       <div className="relative flex items-end justify-between gap-5"><div><p className="contact-platform-label text-[10px] uppercase tracking-[.24em] text-red-400/80">{t(platform.key)}</p><h3 className="contact-platform-title mt-3 text-2xl font-semibold tracking-[-.035em] text-white">{platform.name}</h3></div><span className="contact-platform-icon grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/15 text-white/65 transition duration-500 group-hover:border-red-500/50 group-hover:bg-red-600 group-hover:text-white"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span></div>
       </motion.a>)}
     </div>
    </div>

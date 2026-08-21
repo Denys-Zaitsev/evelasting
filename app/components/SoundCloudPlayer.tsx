@@ -1047,6 +1047,35 @@ export default function SoundCloudPlayer() {
         onPointerCancel={stopPlayerDrag}
         inert={playRequested === 0 && toggleRequested === 0}
       >
+        <div className="mobile-player-dock" aria-label={t("nowPlaying")}>
+          <span
+            className="mobile-player-art"
+            style={artwork ? { backgroundImage: `url("${artwork}")` } : undefined}
+            aria-hidden="true"
+          />
+          <button
+            type="button"
+            className="mobile-player-copy"
+            onPointerDown={(event) => event.stopPropagation()}
+            onClick={toggleCollapsedPlayer}
+            aria-label={isCollapsed ? t("expandPlayer") : t("collapsePlayer")}
+          >
+            <span>{t("nowPlaying")}</span>
+            <strong>{currentTrack?.title || "Evelasting"}</strong>
+          </button>
+          <div className="mobile-player-transport">
+            <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={previousTrack} disabled={!isReady} aria-label="Previous track">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5 8 12l10 7V5ZM5 5v14" /></svg>
+            </button>
+            <button type="button" className="mobile-player-play" onPointerDown={(event) => event.stopPropagation()} onClick={togglePlayback} disabled={!isReady} aria-label={isPlaying ? "Pause track" : "Play track"}>
+              {isPlaying ? <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14" /></svg> : <svg viewBox="0 0 24 24" aria-hidden="true"><path className="is-filled" d="m8 5 11 7-11 7V5Z" /></svg>}
+            </button>
+            <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={nextTrack} disabled={!isReady} aria-label="Next track">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 10 7-10 7V5Zm13 0v14" /></svg>
+            </button>
+          </div>
+        </div>
+
         <button
           type="button"
           className={`floating-player-toggle ${isCollapsed ? "floating-player-toggle-mini" : ""}`}
