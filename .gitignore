@@ -1,1 +1,32 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Next.js build output and caches
+.next/
+out/
+
+# Local environment files may contain secrets
+.env
+.env.*
+!.env.example
+
+# TypeScript and tooling caches
+*.tsbuildinfo
+*.tmp
+.eslintcache
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local operating-system and editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Local binaries and tunnel tools
+cloudflared*
+*.exe
