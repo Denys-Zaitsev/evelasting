@@ -1,6 +1,0 @@
-User-Agent: *
-Allow: /
-Disallow: /api/
-
-Host: https://evelasting.com
-Sitemap: https://evelasting.com/sitemap.xml
