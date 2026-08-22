@@ -32,17 +32,40 @@ const sections = [
     body: (
       <>
         The website does not require an account and does not directly request
-        your name, address, or payment information. If you consent to analytics,
-        information such as visited pages, approximate location, browser and
-        device type, referral source, session activity, navigation clicks,
-        external-link clicks, and music-player interactions may be collected.
-        Music events can include starting a track and reaching listening
-        milestones. This information is used in aggregated reports.
+        your name, address, or payment information. Cookieless, aggregated
+        traffic information may be collected through Vercel Web Analytics. If
+        you consent to Google Analytics, additional information such as visited
+        pages, approximate location, browser and device type, referral source,
+        session activity, navigation clicks, external-link clicks, and
+        music-player interactions may be collected. Music events can include
+        starting a track and reaching listening milestones.
       </>
     ),
   },
   {
-    title: "3. Google Analytics",
+    title: "3. Vercel Web Analytics",
+    body: (
+      <>
+        This website uses Vercel Web Analytics, provided by Vercel Inc., to
+        understand aggregate traffic and improve the website. It does not use
+        cookies and does not collect personal identifiers that track visitors
+        across websites. Page views may include the visited route, referral
+        source, approximate location, browser, operating system, and device
+        type. Learn more in the{" "}
+        <a
+          className="text-white/75 underline decoration-white/25 underline-offset-4 transition hover:text-white"
+          href="https://vercel.com/docs/analytics/privacy-policy"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Vercel Web Analytics privacy documentation
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    title: "4. Google Analytics",
     body: (
       <>
         This website uses Google Analytics 4, provided by Google LLC, to
@@ -65,7 +88,7 @@ const sections = [
     ),
   },
   {
-    title: "4. Cookies and consent",
+    title: "5. Cookies and consent",
     body: (
       <>
         Analytics cookies are optional. They are created only after consent and
@@ -80,7 +103,7 @@ const sections = [
     ),
   },
   {
-    title: "5. SoundCloud and external services",
+    title: "6. SoundCloud and external services",
     body: (
       <>
         The music player uses the SoundCloud widget. SoundCloud may process
@@ -93,20 +116,22 @@ const sections = [
     ),
   },
   {
-    title: "6. Legal basis and retention",
+    title: "7. Legal basis and retention",
     body: (
       <>
-        Analytics processing is based on your consent. You may withdraw that
-        consent at any time without affecting processing that occurred before
-        withdrawal. Analytics information is retained according to the
-        retention settings of the Evelasting Google Analytics property and
-        Google&apos;s applicable policies. Contact messages are used only to
-        respond to the request and are retained only as reasonably necessary.
+        Google Analytics processing is based on your consent. You may withdraw
+        that consent at any time without affecting processing that occurred
+        before withdrawal. Vercel Web Analytics is used for the legitimate
+        interest of understanding aggregate website traffic and improving site
+        performance. Analytics information is retained according to the
+        settings and policies of the respective provider. Contact messages are
+        used only to respond to the request and are retained only as reasonably
+        necessary.
       </>
     ),
   },
   {
-    title: "7. Your rights",
+    title: "8. Your rights",
     body: (
       <>
         Depending on the law that applies to you, you may have rights to request
@@ -125,7 +150,7 @@ const sections = [
     ),
   },
   {
-    title: "8. Changes to this policy",
+    title: "9. Changes to this policy",
     body: (
       <>
         This policy may be updated when the website, its analytics setup, or
@@ -172,11 +197,12 @@ export default function PrivacyPage() {
           </h1>
           <p className="mt-6 max-w-2xl text-sm leading-7 text-white/55 sm:text-base">
             This policy explains how information is handled when you visit the
-            official Evelasting website and choose whether to enable analytics
-            cookies.
+            official Evelasting website, how cookieless traffic statistics are
+            collected, and how you can choose whether to enable optional
+            analytics cookies.
           </p>
           <p className="mt-5 text-[10px] uppercase tracking-[0.22em] text-white/30">
-            Effective: 24 July 2026
+            Effective: 22 August 2026
           </p>
         </section>
 
