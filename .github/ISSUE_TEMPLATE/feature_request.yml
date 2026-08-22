@@ -1,0 +1,25 @@
+name: Feature request
+description: Suggest an improvement for Evelasting
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like to improve?
+      description: Describe the idea and the problem it would solve.
+    validations:
+      required: true
+  - type: textarea
+    id: experience
+    attributes:
+      label: Proposed experience
+      description: Explain how the feature should work from a visitor's perspective.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add references, mockups, or implementation considerations if useful.
