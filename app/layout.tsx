@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 import { siteConfig, socialProfiles } from "@/lib/site";
 import GoogleAnalytics from "./components/GoogleAnalytics";
@@ -111,6 +112,7 @@ export default function RootLayout({
         {children}
         <PwaRegistration />
         <GoogleAnalytics />
+        <Analytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(artistSchema) }}
