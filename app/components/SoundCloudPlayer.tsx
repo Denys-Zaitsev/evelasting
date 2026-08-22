@@ -303,7 +303,22 @@ export default function SoundCloudPlayer() {
   const [position, setPosition] = useState(0);
   const [volume, setVolume] = useState(70);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [playerPosition, setPlayerPosition] = useState<{ x: number; y: number } | null>(null);
+  const [playerPosition, setPlayerPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(() => {
+    const saved = window.localStorage.getItem("evelasting-player-position");
+    if (!saved) return null;
+    try {
+      const parsed = JSON.parse(saved) as { x?: number; y?: number };
+      return typeof parsed.x === "number" && typeof parsed.y === "number"
+        ? { x: parsed.x, y: parsed.y }
+        : null;
+    } catch {
+      window.localStorage.removeItem("evelasting-player-position");
+      return null;
+    }
+  });
   const dragStateRef = useRef<{
     pointerId: number;
     startX: number;
@@ -314,19 +329,6 @@ export default function SoundCloudPlayer() {
   } | null>(null);
 
   const isMuted = volume === 0;
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem("evelasting-player-position");
-    if (!saved) return;
-    try {
-      const parsed = JSON.parse(saved) as { x?: number; y?: number };
-      if (typeof parsed.x === "number" && typeof parsed.y === "number") {
-        setPlayerPosition({ x: parsed.x, y: parsed.y });
-      }
-    } catch {
-      window.localStorage.removeItem("evelasting-player-position");
-    }
-  }, []);
 
   useEffect(() => {
     if (!playerPosition) return;
@@ -821,31 +823,31 @@ export default function SoundCloudPlayer() {
     }
   };
 
-  const previousTrack = () => {
+  const previousTrack = useCallback(() => {
     const widget = widgetRef.current;
     if (!widget || !isReady) return;
 
     setPosition(0);
     widget.prev();
     window.setTimeout(refreshCurrentTrack, 180);
-  };
+  }, [isReady, refreshCurrentTrack]);
 
-  const nextTrack = () => {
+  const nextTrack = useCallback(() => {
     const widget = widgetRef.current;
     if (!widget || !isReady) return;
 
     setPosition(0);
     widget.next();
     window.setTimeout(refreshCurrentTrack, 180);
-  };
+  }, [isReady, refreshCurrentTrack]);
 
-  const seekTrack = (newPosition: number) => {
+  const seekTrack = useCallback((newPosition: number) => {
     const widget = widgetRef.current;
     if (!widget || !isReady) return;
 
     widget.seekTo(newPosition);
     setPosition(newPosition);
-  };
+  }, [isReady]);
 
   const changeVolume = (newVolume: number) => {
     const widget = widgetRef.current;
@@ -982,7 +984,15 @@ export default function SoundCloudPlayer() {
         (action) => safeHandler(action as MediaSessionAction, null),
       );
     };
-  }, [artwork, currentTrack, duration, position]);
+  }, [
+    artwork,
+    currentTrack,
+    duration,
+    nextTrack,
+    position,
+    previousTrack,
+    seekTrack,
+  ]);
 
   useEffect(() => {
     if (!("mediaSession" in navigator)) return;

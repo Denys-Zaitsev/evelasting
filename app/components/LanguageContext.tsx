@@ -43,7 +43,12 @@ const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>("en");
-  useEffect(() => { const saved = window.localStorage.getItem("evelasting-language"); if (saved === "uk" || saved === "en") setLanguage(saved); }, []);
+  useEffect(() => {
+    const saved = window.localStorage.getItem("evelasting-language");
+    if (saved !== "uk" && saved !== "en") return;
+    const restoreLanguage = window.setTimeout(() => setLanguage(saved), 0);
+    return () => window.clearTimeout(restoreLanguage);
+  }, []);
   useEffect(() => { window.localStorage.setItem("evelasting-language", language); document.documentElement.lang = language === "uk" ? "uk" : "en"; }, [language]);
   const value = useMemo(() => ({ language, setLanguage, t: (key: CopyKey) => copy[key][language] }), [language]);
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
