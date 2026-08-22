@@ -1,6 +1,6 @@
 {
   "name": "evelasting",
-  "version": "7.0.0",
+  "version": "7.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -24,5 +24,5 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "description": "Official website of Evelasting \u2014 independent Ukrainian producer."
+  "description": "Official website of Evelasting — independent Ukrainian producer."
 }
