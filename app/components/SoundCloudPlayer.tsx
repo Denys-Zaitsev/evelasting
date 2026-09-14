@@ -1127,7 +1127,7 @@ export default function SoundCloudPlayer() {
           </div>
         </div>
 
-        {isCollapsed ? (
+        {isCollapsed && (
           <button
             type="button"
             className="floating-player-toggle floating-player-toggle-mini"
@@ -1162,34 +1162,6 @@ export default function SoundCloudPlayer() {
               </span>
             </>
           </button>
-        ) : (
-          <div className="floating-player-crown" data-no-drag="true" role="group" aria-label="Player window controls">
-            <button
-              type="button"
-              className="floating-player-crown-button"
-              onPointerDown={(event) => event.stopPropagation()}
-              onClick={toggleCollapsedPlayer}
-              aria-label={t("collapsePlayer")}
-              title={t("collapsePlayer")}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M7 10l5 5 5-5" />
-              </svg>
-            </button>
-            <span className="floating-player-crown-divider" aria-hidden="true" />
-            <button
-              type="button"
-              className="floating-player-crown-button floating-player-close"
-              onPointerDown={(event) => event.stopPropagation()}
-              onClick={closePlayer}
-              aria-label="Close player"
-              title="Close player"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M7 7l10 10M17 7 7 17" />
-              </svg>
-            </button>
-          </div>
         )}
 
         <div
@@ -1200,6 +1172,35 @@ export default function SoundCloudPlayer() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
+          {!isCollapsed && (
+            <div className="floating-player-crown" data-no-drag="true" role="group" aria-label="Player window controls">
+              <button
+                type="button"
+                className="floating-player-crown-button"
+                onPointerDown={(event) => event.stopPropagation()}
+                onClick={toggleCollapsedPlayer}
+                aria-label={t("collapsePlayer")}
+                title={t("collapsePlayer")}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 10l5 5 5-5" />
+                </svg>
+              </button>
+              <span className="floating-player-crown-divider" aria-hidden="true" />
+              <button
+                type="button"
+                className="floating-player-crown-button floating-player-close"
+                onPointerDown={(event) => event.stopPropagation()}
+                onClick={closePlayer}
+                aria-label="Close player"
+                title="Close player"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 7l10 10M17 7 7 17" />
+                </svg>
+              </button>
+            </div>
+          )}
           <div className="custom-player-outer-glow" />
           <div className="custom-player-pointer-light" />
           <div className="custom-player-surface" />
