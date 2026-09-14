@@ -303,6 +303,10 @@ export default function SoundCloudPlayer() {
   const [position, setPosition] = useState(0);
   const [volume, setVolume] = useState(70);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [closedAtRequests, setClosedAtRequests] = useState<{
+    play: number;
+    toggle: number;
+  } | null>(null);
   const [playerPosition, setPlayerPosition] = useState<{
     x: number;
     y: number;
@@ -329,6 +333,12 @@ export default function SoundCloudPlayer() {
   } | null>(null);
 
   const isMuted = volume === 0;
+  const isPlayerClosed =
+    closedAtRequests !== null &&
+    playRequested <= closedAtRequests.play &&
+    toggleRequested <= closedAtRequests.toggle;
+  const playerIsVisible =
+    (playRequested > 0 || toggleRequested > 0) && !isPlayerClosed;
 
   useEffect(() => {
     if (!playerPosition) return;
@@ -823,6 +833,28 @@ export default function SoundCloudPlayer() {
     }
   };
 
+  const closePlayer = () => {
+    const widget = widgetRef.current;
+
+    widget?.pause();
+    widget?.seekTo(0);
+    setPosition(0);
+    setIsPlaying(false);
+    setPlaying(false);
+    setIsCollapsed(false);
+    setClosedAtRequests({ play: playRequested, toggle: toggleRequested });
+
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = null;
+      navigator.mediaSession.playbackState = "none";
+      try {
+        navigator.mediaSession.setPositionState();
+      } catch {
+        // Clearing the position state is optional in some browsers.
+      }
+    }
+  };
+
   const previousTrack = useCallback(() => {
     const widget = widgetRef.current;
     if (!widget || !isReady) return;
@@ -911,6 +943,7 @@ export default function SoundCloudPlayer() {
 
   useEffect(() => {
     const handleKeyboard = (event: KeyboardEvent) => {
+      if (isPlayerClosed) return;
       const target = event.target as HTMLElement | null;
       if (target?.matches("input, textarea, select, [contenteditable='true']")) return;
       const widget = widgetRef.current;
@@ -931,7 +964,7 @@ export default function SoundCloudPlayer() {
     };
     window.addEventListener("keydown", handleKeyboard);
     return () => window.removeEventListener("keydown", handleKeyboard);
-  }, [isReady, refreshCurrentTrack, volume]);
+  }, [isPlayerClosed, isReady, refreshCurrentTrack, volume]);
 
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]') ?? document.head.appendChild(document.createElement("meta"));
@@ -941,7 +974,7 @@ export default function SoundCloudPlayer() {
   }, [currentTrack]);
 
   useEffect(() => {
-    if (!("mediaSession" in navigator) || !currentTrack) return;
+    if (!("mediaSession" in navigator) || !currentTrack || isPlayerClosed) return;
 
     navigator.mediaSession.metadata = new MediaMetadata({
       title: currentTrack.title || "Evelasting Official Releases",
@@ -988,6 +1021,7 @@ export default function SoundCloudPlayer() {
     artwork,
     currentTrack,
     duration,
+    isPlayerClosed,
     nextTrack,
     position,
     previousTrack,
@@ -996,6 +1030,10 @@ export default function SoundCloudPlayer() {
 
   useEffect(() => {
     if (!("mediaSession" in navigator)) return;
+    if (isPlayerClosed) {
+      navigator.mediaSession.playbackState = "none";
+      return;
+    }
     navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
     if (duration > 0 && position >= 0 && position <= duration) {
       try {
@@ -1008,14 +1046,14 @@ export default function SoundCloudPlayer() {
         // Position state is optional and may reject incomplete SoundCloud data.
       }
     }
-  }, [duration, isPlaying, position]);
+  }, [duration, isPlayerClosed, isPlaying, position]);
 
   useEffect(() => {
     const icon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
     if (!icon) return;
-    icon.href = artwork || "/icons/favicon-32.png";
+    icon.href = isPlayerClosed ? "/icons/favicon-32.png" : artwork || "/icons/favicon-32.png";
     return () => { icon.href = "/icons/favicon-32.png"; };
-  }, [artwork]);
+  }, [artwork, isPlayerClosed]);
 
   return (
     <>
@@ -1039,7 +1077,7 @@ export default function SoundCloudPlayer() {
       <div
         ref={playerShellRef}
         className={`custom-player-perspective floating-player-shell ${
-          playRequested > 0 || toggleRequested > 0 ? "floating-player-visible" : ""
+          playerIsVisible ? "floating-player-visible" : ""
         } ${isCollapsed ? "floating-player-collapsed" : ""} ${
           playerPosition ? "floating-player-positioned" : ""
         }`}
@@ -1055,7 +1093,7 @@ export default function SoundCloudPlayer() {
         onPointerMove={movePlayer}
         onPointerUp={stopPlayerDrag}
         onPointerCancel={stopPlayerDrag}
-        inert={playRequested === 0 && toggleRequested === 0}
+        inert={!playerIsVisible}
       >
         <div className="mobile-player-dock" aria-label={t("nowPlaying")}>
           <span
@@ -1083,21 +1121,23 @@ export default function SoundCloudPlayer() {
             <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={nextTrack} disabled={!isReady} aria-label="Next track">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 10 7-10 7V5Zm13 0v14" /></svg>
             </button>
+            <button type="button" className="mobile-player-close" onPointerDown={(event) => event.stopPropagation()} onClick={closePlayer} aria-label="Close player" title="Close player">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" /></svg>
+            </button>
           </div>
         </div>
 
-        <button
-          type="button"
-          className={`floating-player-toggle ${isCollapsed ? "floating-player-toggle-mini" : ""}`}
-          onClick={() => {
-            // Collapsed clicks are handled in stopPlayerDrag so click and drag
-            // remain mutually exclusive even with pointer capture enabled.
-            if (!isCollapsed) toggleCollapsedPlayer();
-          }}
-          aria-label={isCollapsed ? t("expandPlayer") : t("collapsePlayer")}
-          title={isCollapsed ? t("expandPlayer") : t("collapsePlayer")}
-        >
-          {isCollapsed ? (
+        {isCollapsed ? (
+          <button
+            type="button"
+            className="floating-player-toggle floating-player-toggle-mini"
+            onClick={() => {
+              // Collapsed clicks are handled in stopPlayerDrag so click and drag
+              // remain mutually exclusive even with pointer capture enabled.
+            }}
+            aria-label={t("expandPlayer")}
+            title={t("expandPlayer")}
+          >
             <>
               <span
                 className="floating-player-mini-art"
@@ -1121,15 +1161,36 @@ export default function SoundCloudPlayer() {
                 </span>
               </span>
             </>
-          ) : (
-            <>
-              <span>{t("minimize")}</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+          </button>
+        ) : (
+          <div className="floating-player-crown" data-no-drag="true" role="group" aria-label="Player window controls">
+            <button
+              type="button"
+              className="floating-player-crown-button"
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={toggleCollapsedPlayer}
+              aria-label={t("collapsePlayer")}
+              title={t("collapsePlayer")}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M7 10l5 5 5-5" />
               </svg>
-            </>
-          )}
-        </button>
+            </button>
+            <span className="floating-player-crown-divider" aria-hidden="true" />
+            <button
+              type="button"
+              className="floating-player-crown-button floating-player-close"
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={closePlayer}
+              aria-label="Close player"
+              title="Close player"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 7l10 10M17 7 7 17" />
+              </svg>
+            </button>
+          </div>
+        )}
 
         <div
           className={`custom-player ${
