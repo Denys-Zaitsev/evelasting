@@ -234,8 +234,8 @@ body {
 .custom-player {
   position: relative;
   width: 340px;
-  padding: 15px;
-  overflow: visible;
+  padding: 50px 15px 15px;
+  overflow: hidden;
   border: 1px solid rgb(var(--player-accent) / 0.25);
   border-radius: 29px;
   background:
@@ -268,28 +268,6 @@ body {
     border-color 1.4s ease,
     background 1.4s ease,
     box-shadow 1.4s ease;
-}
-
-.floating-player-shell:not(.floating-player-collapsed) .custom-player::before {
-  position: absolute;
-  top: -42px;
-  right: 18px;
-  z-index: 2;
-  width: 150px;
-  height: 54px;
-  background:
-    linear-gradient(
-      155deg,
-      rgba(255, 255, 255, 0.055),
-      rgb(var(--player-accent) / 0.15) 68%,
-      rgb(var(--player-accent) / 0.2)
-    ),
-    rgba(10, 10, 11, 0.94);
-  clip-path: path("M 0 54 L 0 46 C 22 46 30 42 38 26 C 46 10 56 5 75 5 C 94 5 104 10 112 26 C 120 42 128 46 150 46 L 150 54 Z");
-  -webkit-clip-path: path("M 0 54 L 0 46 C 22 46 30 42 38 26 C 46 10 56 5 75 5 C 94 5 104 10 112 26 C 120 42 128 46 150 46 L 150 54 Z");
-  content: "";
-  pointer-events: none;
-  transition: background 1.4s ease;
 }
 
 .custom-player:hover {
@@ -1354,12 +1332,12 @@ body {
 /* The window controls grow out of the player body as one continuous surface. */
 .floating-player-crown {
   position: absolute;
-  top: -42px;
-  right: 18px;
+  top: 7px;
+  right: 11px;
   z-index: 90;
   display: flex;
-  width: 150px;
-  height: 54px;
+  width: 92px;
+  height: 36px;
   align-items: center;
   justify-content: center;
   border: 0;
@@ -1370,8 +1348,8 @@ body {
   position: relative;
   z-index: 1;
   display: grid;
-  width: 43px;
-  height: 36px;
+  width: 39px;
+  height: 32px;
   place-items: center;
   border: 0;
   border-radius: 999px;
