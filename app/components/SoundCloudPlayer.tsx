@@ -354,9 +354,10 @@ export default function SoundCloudPlayer() {
         if (!current) return current;
         const width = isCollapsed ? (window.innerWidth <= 760 ? 64 : 68) : window.innerWidth <= 1180 ? 300 : 340;
         const height = isCollapsed ? (window.innerWidth <= 760 ? 64 : 68) : window.innerWidth <= 760 ? 116 : 520;
+        const topMargin = !isCollapsed && window.innerWidth > 760 ? 48 : 8;
         return {
           x: Math.max(8, Math.min(current.x, window.innerWidth - width - 8)),
-          y: Math.max(8, Math.min(current.y, window.innerHeight - height - 8)),
+          y: Math.max(topMargin, Math.min(current.y, window.innerHeight - height - 8)),
         };
       });
     };
@@ -401,12 +402,13 @@ export default function SoundCloudPlayer() {
     }
     const width = shell.offsetWidth;
     const height = shell.offsetHeight;
+    const topMargin = !isCollapsed && window.innerWidth > 760 ? 48 : 8;
     const x = Math.max(
       8,
       Math.min(drag.originX + event.clientX - drag.startX, window.innerWidth - width - 8),
     );
     const y = Math.max(
-      8,
+      topMargin,
       Math.min(drag.originY + event.clientY - drag.startY, window.innerHeight - height - 8),
     );
     setPlayerPosition({ x, y });
@@ -422,18 +424,19 @@ export default function SoundCloudPlayer() {
 
     const bounds = shell.getBoundingClientRect();
     const margin = 12;
+    const topMargin = !isCollapsed && window.innerWidth > 760 ? 48 : margin;
     const snapDistance = 52;
     let x = bounds.left;
     let y = bounds.top;
 
     if (bounds.left < snapDistance) x = margin;
     if (window.innerWidth - bounds.right < snapDistance) x = window.innerWidth - bounds.width - margin;
-    if (bounds.top < snapDistance) y = margin;
+    if (bounds.top < snapDistance) y = topMargin;
     if (window.innerHeight - bounds.bottom < snapDistance) y = window.innerHeight - bounds.height - margin;
 
     setPlayerPosition({
       x: Math.max(margin, Math.min(x, window.innerWidth - bounds.width - margin)),
-      y: Math.max(margin, Math.min(y, window.innerHeight - bounds.height - margin)),
+      y: Math.max(topMargin, Math.min(y, window.innerHeight - bounds.height - margin)),
     });
 
     if (shell.hasPointerCapture(event.pointerId)) shell.releasePointerCapture(event.pointerId);
@@ -481,9 +484,10 @@ export default function SoundCloudPlayer() {
           ? 300
           : 340;
       const expandedHeight = window.innerWidth <= 760 ? 116 : 520;
+      const expandedTopMargin = window.innerWidth <= 760 ? margin : 48;
       setPlayerPosition({
         x: Math.max(margin, Math.min(bounds.right - expandedWidth, window.innerWidth - expandedWidth - margin)),
-        y: Math.max(margin, Math.min(bounds.top, window.innerHeight - expandedHeight - margin)),
+        y: Math.max(expandedTopMargin, Math.min(bounds.top, window.innerHeight - expandedHeight - margin)),
       });
     }
     setIsCollapsed(false);
