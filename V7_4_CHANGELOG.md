@@ -12,5 +12,8 @@ Security and SEO patch prepared on 14 September 2026.
 - Replaced missing release cover fallbacks that returned 404 responses.
 - Refreshed sitemap modification dates and ensured every image URL resolves.
 - Bumped the service-worker cache key so visitors receive the patch cleanly.
+- Moved the desktop minimize control into a continuous wave-shaped extension of the player.
+- Added a close control that stops playback, resets progress, and hides the player until Play is pressed again.
+- Added the same full-close behavior to the mobile player dock.
 
-SoundCloud playback, the featured release, and media optimization remain unchanged.
+The featured release and media optimization remain unchanged.
