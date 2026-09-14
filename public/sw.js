@@ -1,4 +1,4 @@
-const CACHE = "evelasting-v7-shell";
+const CACHE = "evelasting-v7.4-shell";
 const SHELL = ["/", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png"];
 
 self.addEventListener("install", (event) => {

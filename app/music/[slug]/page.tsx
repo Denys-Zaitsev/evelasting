@@ -35,7 +35,7 @@ export async function generateMetadata({
   const canonical = `/music/${release.slug}`;
 
   return {
-    title,
+    title: { absolute: title },
     description,
     keywords: [
       release.title,
@@ -53,10 +53,8 @@ export async function generateMetadata({
       description,
       images: [
         {
-          url: "/og/evelasting-og.jpg",
-          width: 1200,
-          height: 630,
-          alt: "Evelasting — Independent Ukrainian Producer",
+          url: release.cover,
+          alt: `${release.title} — ${release.artist}`,
         },
       ],
     },
@@ -64,7 +62,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: ["/og/evelasting-og.jpg"],
+      images: [release.cover],
     },
   };
 }
@@ -76,7 +74,7 @@ function ReleaseSchema({ release }: { release: Release }) {
     "@id": `${siteConfig.url}/music/${release.slug}#recording`,
     name: release.title,
     url: `${siteConfig.url}/music/${release.slug}`,
-    image: `${siteConfig.url}/og/evelasting-og.jpg`,
+    image: `${siteConfig.url}${encodeURI(release.cover)}`,
     description: release.description,
     genre: release.genre,
     datePublished: String(release.year),

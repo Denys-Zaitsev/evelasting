@@ -5,7 +5,7 @@ import { LanguageProvider } from "./components/LanguageContext";
 import PerformanceMotionConfig from "./components/PerformanceMotionConfig";
 import Preloader from "./components/Preloader";
 import DeferredSoundCloudPlayer from "./components/DeferredSoundCloudPlayer";
-import DeferredHomeContent from "./components/DeferredHomeContent";
+import HomeBelowFold from "./components/HomeBelowFold";
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
         <Navbar />
 
         <Hero />
-        <DeferredHomeContent />
+        <HomeBelowFold />
 
         <DeferredSoundCloudPlayer />
       </main>

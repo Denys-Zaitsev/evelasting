@@ -17,6 +17,10 @@ export default function Hero() {
         relative min-h-[100svh] overflow-hidden bg-black px-4 text-white sm:px-6 md:px-10
       "
     >
+      <h1 className="sr-only">
+        Evelasting — Independent Ukrainian Producer
+      </h1>
+
       <HeroBackground
         shouldReduceMotion={shouldReduceMotion}
       />
