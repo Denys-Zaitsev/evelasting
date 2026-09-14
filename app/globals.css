@@ -1328,6 +1328,110 @@ body {
   box-shadow: 0 14px 38px rgba(0,0,0,.5), 0 0 28px rgb(var(--player-accent) / .18);
 }
 
+/* The window controls grow out of the player body as one continuous surface. */
+.floating-player-crown {
+  position: absolute;
+  top: -39px;
+  right: 22px;
+  z-index: 90;
+  display: flex;
+  width: 112px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgb(var(--player-accent) / 0.25);
+  border-bottom-color: transparent;
+  border-radius: 58px 58px 13px 13px / 39px 39px 13px 13px;
+  background:
+    radial-gradient(
+      circle at 50% 135%,
+      rgb(var(--player-accent) / 0.3),
+      transparent 62%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.018) 40%,
+      rgb(var(--player-accent) / 0.11)
+    ),
+    rgba(10, 10, 11, 0.94);
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+  box-shadow:
+    0 -18px 52px rgba(0, 0, 0, 0.48),
+    0 -8px 48px rgb(var(--player-accent) / 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.085);
+  transition:
+    border-color 1.4s ease,
+    background 1.4s ease,
+    box-shadow 1.4s ease;
+}
+
+.floating-player-crown::after {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  height: 13px;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 10, 11, 0.96),
+    rgb(var(--player-accent) / 0.16),
+    rgba(10, 10, 11, 0.96)
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.floating-player-crown-button {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 48px;
+  height: 38px;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.62);
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-player-crown-button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.floating-player-crown-button svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.floating-player-crown-divider {
+  position: relative;
+  z-index: 1;
+  width: 1px;
+  height: 17px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.floating-player-close:hover,
+.mobile-player-close:hover {
+  background: rgba(239, 68, 68, 0.13) !important;
+  color: #f87171 !important;
+}
+
 .floating-player-shell.floating-player-collapsed {
   width: min(330px, calc(100vw - 28px));
   height: 76px;
@@ -2198,7 +2302,8 @@ button, a, input { min-width: 0; }
     transform: none !important;
   }
   .floating-player-shell .custom-player,
-  .floating-player-shell .floating-player-toggle { display: none !important; }
+  .floating-player-shell .floating-player-toggle,
+  .floating-player-shell .floating-player-crown { display: none !important; }
   .mobile-player-dock {
     display: grid;
     height: 70px;
@@ -2251,6 +2356,10 @@ button, a, input { min-width: 0; }
   .mobile-player-transport .mobile-player-play { background: rgb(var(--player-accent)); color: #fff; }
   .mobile-player-transport .mobile-player-play svg { width: 19px; height: 19px; }
   .mobile-player-transport .is-filled { fill: currentColor; stroke: none; }
+  .mobile-player-transport .mobile-player-close {
+    margin-left: 2px;
+    color: rgba(255,255,255,.48);
+  }
 
   body:has(.floating-player-visible) .cookie-preferences-button {
     bottom: max(92px, calc(env(safe-area-inset-bottom) + 82px)) !important;
