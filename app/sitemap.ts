@@ -3,9 +3,10 @@ import { releases } from "@/app/components/Music/releases";
 import { siteConfig } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const lastModified = new Date("2026-09-14");
   const releasePages: MetadataRoute.Sitemap = releases.map((release) => ({
     url: `${siteConfig.url}/music/${release.slug}`,
-    lastModified: new Date(),
+    lastModified,
     changeFrequency: "monthly",
     priority: 0.7,
     images: [`${siteConfig.url}${encodeURI(release.cover)}`],
@@ -14,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: siteConfig.url,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: "weekly",
       priority: 1,
     },

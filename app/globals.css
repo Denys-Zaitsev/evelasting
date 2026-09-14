@@ -234,7 +234,7 @@ body {
 .custom-player {
   position: relative;
   width: 340px;
-  padding: 15px;
+  padding: 45px 15px 15px;
   overflow: hidden;
   border: 1px solid rgb(var(--player-accent) / 0.25);
   border-radius: 29px;
@@ -283,6 +283,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  border-radius: inherit;
   background: linear-gradient(
     145deg,
     rgba(255, 255, 255, 0.03),
@@ -1328,6 +1329,106 @@ body {
   box-shadow: 0 14px 38px rgba(0,0,0,.5), 0 0 28px rgb(var(--player-accent) / .18);
 }
 
+/* The window controls grow out of the player body as one continuous surface. */
+.floating-player-crown {
+  position: absolute;
+  top: 5px;
+  right: 11px;
+  left: 14px;
+  z-index: 90;
+  display: flex;
+  width: auto;
+  height: 34px;
+  align-items: center;
+  justify-content: flex-end;
+  border: 0;
+  background: transparent;
+}
+
+.floating-player-crown::before {
+  margin-right: auto;
+  padding-left: 14px;
+  color: rgba(255, 255, 255, 0.34);
+  content: "EVELASTING";
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  line-height: 1;
+}
+
+.floating-player-crown::after {
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(var(--player-accent));
+  box-shadow: 0 0 10px rgb(var(--player-accent) / 0.7);
+  content: "";
+  opacity: 0.5;
+  transform: translateY(-50%);
+  transition: background-color 1.4s ease, box-shadow 1.4s ease, opacity 0.3s ease;
+}
+
+.custom-player-playing .floating-player-crown::after {
+  animation: player-titlebar-pulse 1.8s ease-in-out infinite;
+  opacity: 1;
+}
+
+@keyframes player-titlebar-pulse {
+  0%, 100% { transform: translateY(-50%) scale(0.82); }
+  50% { transform: translateY(-50%) scale(1.18); }
+}
+
+.floating-player-crown-button {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 39px;
+  height: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.62);
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-player-crown-button:hover {
+  background: rgba(255, 255, 255, 0.055);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.floating-player-crown-button svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.floating-player-crown-divider {
+  position: relative;
+  z-index: 1;
+  width: 1px;
+  height: 17px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.floating-player-close:hover,
+.mobile-player-close:hover {
+  background: rgba(239, 68, 68, 0.13) !important;
+  color: #f87171 !important;
+}
+
 .floating-player-shell.floating-player-collapsed {
   width: min(330px, calc(100vw - 28px));
   height: 76px;
@@ -2198,7 +2299,8 @@ button, a, input { min-width: 0; }
     transform: none !important;
   }
   .floating-player-shell .custom-player,
-  .floating-player-shell .floating-player-toggle { display: none !important; }
+  .floating-player-shell .floating-player-toggle,
+  .floating-player-shell .floating-player-crown { display: none !important; }
   .mobile-player-dock {
     display: grid;
     height: 70px;
@@ -2251,6 +2353,10 @@ button, a, input { min-width: 0; }
   .mobile-player-transport .mobile-player-play { background: rgb(var(--player-accent)); color: #fff; }
   .mobile-player-transport .mobile-player-play svg { width: 19px; height: 19px; }
   .mobile-player-transport .is-filled { fill: currentColor; stroke: none; }
+  .mobile-player-transport .mobile-player-close {
+    margin-left: 2px;
+    color: rgba(255,255,255,.48);
+  }
 
   body:has(.floating-player-visible) .cookie-preferences-button {
     bottom: max(92px, calc(env(safe-area-inset-bottom) + 82px)) !important;

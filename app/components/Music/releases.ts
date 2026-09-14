@@ -37,7 +37,7 @@ export const releases: Release[] = [
     genre: "Phonk",
     description:
       "A nocturnal blend of soft atmosphere, urban motion and a restrained phonk pulse.",
-    cover: "/images/Dreamy Urban Phonk.jpg",
+    cover: "/og/evelasting-og.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
     playlistIndex: 1,
   },
@@ -50,7 +50,7 @@ export const releases: Release[] = [
     genre: "Phonk",
     description:
       "A spacious, melodic track built around the idea that sound can outlive the moment that created it.",
-    cover: "/images/Eternity of Sound.jpg",
+    cover: "/og/evelasting-og.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
     playlistIndex: 8,
   },
@@ -63,7 +63,7 @@ export const releases: Release[] = [
     genre: "Phonk",
     description:
       "Cold space, distant light and a heavy low end shape one of Evelasting's darkest atmospheres.",
-    cover: "/images/Darkness Of Space.png",
+    cover: "/og/evelasting-og.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
     playlistIndex: 7,
   },
@@ -76,7 +76,7 @@ export const releases: Release[] = [
     genre: "Phonk",
     description:
       "An aggressive, high-pressure phonk cut designed around momentum and impact.",
-    cover: "/images/Rampage 185.jpg",
+    cover: "/og/evelasting-og.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
     playlistIndex: 6,
   },
@@ -89,7 +89,7 @@ export const releases: Release[] = [
     genre: "Phonk",
     description:
       "A dramatic collision of distorted energy, tension and the recurring theme of eternity.",
-    cover: "/images/Blood Of The Eternity.png",
+    cover: "/og/evelasting-og.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
     playlistIndex: 4,
   },
@@ -102,7 +102,7 @@ export const releases: Release[] = [
     genre: "Phonk",
     description:
       "Raw percussion and fractured textures turn WRACK into a compact burst of controlled chaos.",
-    cover: "/images/WRACK.png",
+    cover: "/og/evelasting-og.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
     playlistIndex: 3,
   },
@@ -115,7 +115,7 @@ export const releases: Release[] = [
     genre: "Phonk",
     description:
       "A direct and energetic phonk statement with a sharp hook and club-focused movement.",
-    cover: "/images/yhhb-phonk.png",
+    cover: "/og/evelasting-og.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
     playlistIndex: 2,
   },
@@ -128,7 +128,7 @@ export const releases: Release[] = [
     genre: "Phonk",
     description:
       "Warm sunset colors meet late-night fatigue in a slower, reflective side of Evelasting's sound.",
-    cover: "/images/Sunset Patigue.png",
+    cover: "/og/evelasting-og.jpg",
     soundcloud: "https://soundcloud.com/evelasting1",
     spotify:
       "https://open.spotify.com/track/0FwFtQLezEBeTdFPaappOe",

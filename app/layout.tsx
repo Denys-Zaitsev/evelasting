@@ -14,6 +14,11 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
+  appleWebApp: {
+    capable: true,
+    title: siteConfig.name,
+    statusBarStyle: "black-translucent",
+  },
   authors: [{ name: "Evelasting", url: siteConfig.url }],
   creator: "Evelasting",
   publisher: "Evelasting",
@@ -90,6 +95,7 @@ const artistSchema = {
   "@id": `${siteConfig.url}/#artist`,
   name: siteConfig.name,
   url: siteConfig.url,
+  logo: `${siteConfig.url}/icons/icon-512.png`,
   image: `${siteConfig.url}/og/evelasting-og.jpg`,
   description: siteConfig.description,
   genre: siteConfig.artist.genres,
@@ -98,6 +104,21 @@ const artistSchema = {
     name: siteConfig.artist.origin,
   },
   sameAs: socialProfiles,
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteConfig.url}/#website`,
+  url: siteConfig.url,
+  name: siteConfig.name,
+  alternateName: "Evelasting Music",
+  description: siteConfig.description,
+  thumbnailUrl: `${siteConfig.url}/og/evelasting-og.jpg`,
+  inLanguage: ["en", "uk"],
+  publisher: {
+    "@id": `${siteConfig.url}/#artist`,
+  },
 };
 
 export default function RootLayout({
@@ -116,6 +137,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(artistSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </body>
     </html>
