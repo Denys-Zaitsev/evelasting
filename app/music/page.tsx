@@ -54,7 +54,7 @@ export default function MusicPage() {
     <>
       <main id="main-content" className="min-h-screen overflow-x-clip bg-black text-white">
         <Navbar />
-        <section className="music-section relative isolate min-h-screen overflow-hidden border-t border-white/10 bg-black px-4 pb-24 pt-32 sm:px-6 sm:pb-28 sm:pt-36 md:px-10 lg:px-12 lg:pb-36 lg:pt-44">
+        <section className="music-section relative isolate min-h-screen overflow-hidden border-t border-white/10 bg-black px-4 pb-16 pt-32 sm:px-6 sm:pb-20 sm:pt-36 md:px-10 lg:px-12 lg:pb-24 lg:pt-44">
           <BackgroundEffects />
           <div
             aria-hidden="true"

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 import { useLanguage } from "../LanguageContext";
 import { usePlayer } from "../PlayerContext";
@@ -11,7 +11,20 @@ import ReleaseCard from "./ReleaseCard";
 export default function LatestReleases() {
   const { tracks, currentTrack, isPlaying, playTrack, setPreviewArtwork } = usePlayer();
   const { t } = useLanguage();
-  const latestTracks = tracks.slice(0, 3);
+  const latestTracks = useMemo(
+    () =>
+      [...tracks]
+        .sort((left, right) => {
+          const dateDifference =
+            Date.parse(right.publishedAt) - Date.parse(left.publishedAt);
+
+          return Number.isNaN(dateDifference)
+            ? left.index - right.index
+            : dateDifference || left.index - right.index;
+        })
+        .slice(0, 3),
+    [tracks],
+  );
 
   const handlePlay = useCallback((index: number) => playTrack(index), [playTrack]);
   const handlePreview = useCallback(
@@ -41,9 +54,14 @@ export default function LatestReleases() {
           </p>
           <Link
             href="/music"
-            className="mt-5 inline-flex min-h-11 items-center justify-center gap-3 rounded-full border border-white/15 px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[.2em] text-white/75 transition hover:border-white/35 hover:bg-white/[.06] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            className="group mt-5 inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-[rgb(var(--release-accent)/.72)] bg-[rgb(var(--release-accent)/.82)] px-6 py-3 text-[10px] font-bold uppercase tracking-[.2em] text-white shadow-[0_0_36px_rgb(var(--release-accent)/.26)] transition duration-300 hover:-translate-y-0.5 hover:bg-[rgb(var(--release-accent))] hover:shadow-[0_0_48px_rgb(var(--release-accent)/.42)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
-            {t("viewAllReleases")} <span aria-hidden="true">→</span>
+            <span
+              aria-hidden="true"
+              className="h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,.9)]"
+            />
+            {t("viewAllReleases")}
+            <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </Link>
         </div>
       </div>
