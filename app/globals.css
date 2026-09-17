@@ -2088,7 +2088,8 @@ body.mobile-menu-open { overflow: hidden; }
   }
 
   .floating-player-shell:not(.floating-player-collapsed) .custom-player {
-    width: 100%;
+    width: 340px;
+    zoom: var(--floating-player-scale, 1);
   }
 
   .floating-player-shell:not(.floating-player-collapsed) .floating-player-resize-handle {
@@ -2100,6 +2101,10 @@ body.mobile-menu-open { overflow: hidden; }
     transform: none !important;
     transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
   }
+}
+
+.custom-player-track-count {
+  padding-left: 24px;
 }
 .floating-player-shell.floating-player-collapsed .custom-player {
   opacity: 0;
