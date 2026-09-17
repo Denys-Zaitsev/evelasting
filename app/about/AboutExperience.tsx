@@ -165,7 +165,7 @@ export default function AboutExperience() {
             <p className="text-[10px] font-medium uppercase tracking-[0.34em] text-red-400 sm:text-xs">
               {copy.eyebrow}
             </p>
-            <h1 className="mt-6 text-[clamp(3.7rem,10vw,8.5rem)] font-semibold leading-[0.9] tracking-[-0.075em] text-white">
+            <h1 aria-label={`${copy.firstName} ${copy.lastName}`} className="mt-6 text-[clamp(3.7rem,10vw,8.5rem)] font-semibold leading-[0.9] tracking-[-0.075em] text-white">
               <span className="block">{copy.firstName}</span>
               <span className="mt-1 block text-white/34 sm:mt-2">{copy.lastName}</span>
             </h1>
