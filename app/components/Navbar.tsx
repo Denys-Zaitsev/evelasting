@@ -51,6 +51,7 @@ export default function Navbar() {
   const navigation = [
     { href: sectionHref("music"), label: t("music") },
     { href: sectionHref("story"), label: t("story") },
+    { href: "/about", label: t("about") },
     { href: sectionHref("contact"), label: t("contact") },
   ];
 
@@ -132,9 +133,10 @@ export default function Navbar() {
           "
         >
           {navigation.map((item) => (
-          <a
+          <Link
             key={item.href}
             href={item.href}
+            aria-current={pathname === item.href ? "page" : undefined}
             className="
               group/nav relative py-2
               outline-none
@@ -159,7 +161,7 @@ export default function Navbar() {
                 group-focus-visible/nav:scale-x-100
               "
             />
-          </a>
+          </Link>
           ))}
         </nav>
 
@@ -202,10 +204,11 @@ export default function Navbar() {
       >
         <nav aria-label="Mobile navigation" className="mx-auto grid max-w-7xl gap-1">
           {navigation.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               onClick={() => setIsMenuOpen(false)}
+              aria-current={pathname === item.href ? "page" : undefined}
               className="flex min-h-12 items-center justify-between rounded-xl px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white/75 transition hover:bg-white/[0.06] hover:text-white"
             >
               {item.label}
@@ -215,7 +218,7 @@ export default function Navbar() {
                   <path d="M7 17 17 7" />
                 </svg>
               </span>
-            </a>
+            </Link>
           ))}
         </nav>
       </div>

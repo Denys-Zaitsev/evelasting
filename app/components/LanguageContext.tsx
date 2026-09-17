@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 export type Language = "en" | "uk";
 
 const copy = {
-  music: { en: "Music", uk: "Музика" }, story: { en: "Story", uk: "Історія" }, contact: { en: "Contact", uk: "Контакти" },
+  music: { en: "Music", uk: "Музика" }, story: { en: "Story", uk: "Історія" }, about: { en: "About", uk: "Про артиста" }, contact: { en: "Contact", uk: "Контакти" },
   latest: { en: "Latest release", uk: "Останній реліз" }, available: { en: "Available now", uk: "Вже доступно" }, producer: { en: "Independent Ukrainian Producer", uk: "Незалежний український продюсер" },
   totalPlays: { en: "Total plays", uk: "Усього прослуховувань" }, discover: { en: "Discover the story", uk: "Відкрити історію" }, liveSelection: { en: "Live selection", uk: "Жива добірка" },
   nowPlaying: { en: "Now playing", uk: "Зараз грає" }, minimize: { en: "Minimize", uk: "Згорнути" }, expandPlayer: { en: "Expand player", uk: "Розгорнути плеєр" }, collapsePlayer: { en: "Collapse player", uk: "Згорнути плеєр" }, open: { en: "Open", uk: "Відкрити" }, loadingShort: { en: "Loading", uk: "Завантаження" },
