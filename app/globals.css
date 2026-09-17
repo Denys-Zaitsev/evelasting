@@ -2104,7 +2104,7 @@ body.mobile-menu-open { overflow: hidden; }
 }
 
 .custom-player-track-count {
-  padding-left: 24px;
+  margin-left: 28px;
 }
 .floating-player-shell.floating-player-collapsed .custom-player {
   opacity: 0;
