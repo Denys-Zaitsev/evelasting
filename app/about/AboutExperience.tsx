@@ -10,6 +10,8 @@ import Navbar from "../components/Navbar";
 
 const aboutCopy = {
   en: {
+    firstName: "DENYS",
+    lastName: "ZAITSEV",
     eyebrow: "The artist behind Evelasting",
     role: "Artist and producer behind Evelasting",
     intro:
@@ -71,6 +73,8 @@ const aboutCopy = {
     portraitAlt: "Denys Zaitsev, the artist and producer behind Evelasting",
   },
   uk: {
+    firstName: "ДЕНИС",
+    lastName: "ЗАЙЦЕВ",
     eyebrow: "Артист, який стоїть за Evelasting",
     role: "Артист і продюсер проєкту Evelasting",
     intro:
@@ -162,8 +166,8 @@ export default function AboutExperience() {
               {copy.eyebrow}
             </p>
             <h1 className="mt-6 text-[clamp(3.7rem,10vw,8.5rem)] font-semibold leading-[0.82] tracking-[-0.075em] text-white">
-              <span className="block">DENYS</span>
-              <span className="block text-white/34">ZAITSEV</span>
+              <span className="block">{copy.firstName}</span>
+              <span className="block text-white/34">{copy.lastName}</span>
             </h1>
             <p className="mt-7 text-xs uppercase tracking-[0.24em] text-white/55">
               {copy.role}
@@ -184,21 +188,25 @@ export default function AboutExperience() {
             initial={reducedMotion ? false : { opacity: 0, scale: 0.965, x: 24 }}
             animate={reducedMotion ? undefined : { opacity: 1, scale: 1, x: 0 }}
             transition={{ ...revealTransition, delay: 0.12 }}
-            className="relative mx-auto aspect-square w-full max-w-[44rem] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.025] shadow-[0_40px_120px_rgba(69,20,170,.28)] sm:rounded-[2.8rem]"
+            className="relative mx-auto aspect-square w-full max-w-[41rem]"
           >
-            <Image
-              src="/about/denys-zaitsev.webp"
-              alt={copy.portraitAlt}
-              fill
-              priority
-              sizes="(max-width: 1023px) 92vw, 55vw"
-              className="object-cover object-center"
-            />
-            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/34 via-transparent to-black/10" />
-            <div aria-hidden className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-black/28 to-transparent" />
-            <p className="absolute bottom-5 left-6 text-[9px] uppercase tracking-[0.3em] text-white/50 sm:bottom-7 sm:left-8">
-              Evelasting · 2026
-            </p>
+            <div aria-hidden className="absolute -inset-4 rounded-full border border-violet-400/10 sm:-inset-6" />
+            <div aria-hidden className="absolute -inset-1 rounded-full bg-gradient-to-br from-violet-500/45 via-white/10 to-red-500/25 blur-[1px]" />
+            <div className="relative h-full w-full overflow-hidden rounded-full border border-white/15 bg-white/[0.025] shadow-[0_40px_130px_rgba(69,20,170,.34)]">
+              <Image
+                src="/about/denys-zaitsev.webp"
+                alt={copy.portraitAlt}
+                fill
+                priority
+                sizes="(max-width: 1023px) 88vw, 52vw"
+                className="object-cover object-center"
+              />
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/38 via-transparent to-black/10" />
+              <div aria-hidden className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-black/22 to-transparent" />
+              <p className="absolute bottom-[8%] left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] uppercase tracking-[0.3em] text-white/48 sm:text-[9px]">
+                Evelasting · 2026
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>
