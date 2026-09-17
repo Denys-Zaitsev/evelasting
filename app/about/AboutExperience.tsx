@@ -155,7 +155,7 @@ export default function AboutExperience() {
         <div aria-hidden className="absolute right-[-16rem] top-[-12rem] -z-20 h-[48rem] w-[48rem] rounded-full bg-violet-700/20 blur-[160px]" />
         <div aria-hidden className="absolute inset-0 -z-10 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.6)_1px,transparent_1px)] [background-size:72px_72px]" />
 
-        <div className="mx-auto grid min-h-[calc(100svh-9rem)] max-w-7xl items-center gap-12 lg:grid-cols-[0.88fr_1.12fr] lg:gap-16">
+        <div className="mx-auto grid min-h-[calc(100svh-9rem)] max-w-7xl items-center gap-12 md:-translate-y-5 lg:grid-cols-[0.88fr_1.12fr] lg:gap-16">
           <motion.div
             initial={reducedMotion ? false : { opacity: 0, y: 30 }}
             animate={reveal}
