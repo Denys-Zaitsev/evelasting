@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
 import { siteConfig, socialProfiles } from "@/lib/site";
-import { LanguageProvider } from "../components/LanguageContext";
-import PerformanceMotionConfig from "../components/PerformanceMotionConfig";
 import AboutExperience from "./AboutExperience";
 
 export const metadata: Metadata = {
@@ -51,14 +49,12 @@ const personSchema = {
 
 export default function AboutPage() {
   return (
-    <LanguageProvider>
-      <PerformanceMotionConfig>
-        <AboutExperience />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-        />
-      </PerformanceMotionConfig>
-    </LanguageProvider>
+    <>
+      <AboutExperience />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+    </>
   );
 }
