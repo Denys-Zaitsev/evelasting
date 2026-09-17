@@ -3,6 +3,7 @@
 import Script from "next/script";
 import {
   type CSSProperties,
+  type KeyboardEvent as ReactKeyboardEvent,
   type MouseEvent,
   type PointerEvent as ReactPointerEvent,
   useCallback,
@@ -114,6 +115,9 @@ const DEFAULT_ACCENT: RGB = {
   g: 28,
   b: 65,
 };
+
+const PLAYER_MIN_WIDTH = 270;
+const PLAYER_MAX_WIDTH = 340;
 
 function formatTime(milliseconds: number) {
   if (!Number.isFinite(milliseconds) || milliseconds < 0) {
@@ -303,6 +307,12 @@ export default function SoundCloudPlayer() {
   const [position, setPosition] = useState(0);
   const [volume, setVolume] = useState(70);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [playerWidth, setPlayerWidth] = useState(() => {
+    const saved = Number(window.localStorage.getItem("evelasting-player-width"));
+    return Number.isFinite(saved)
+      ? Math.max(PLAYER_MIN_WIDTH, Math.min(saved, PLAYER_MAX_WIDTH))
+      : PLAYER_MAX_WIDTH;
+  });
   const [closedAtRequests, setClosedAtRequests] = useState<{
     play: number;
     toggle: number;
@@ -331,6 +341,12 @@ export default function SoundCloudPlayer() {
     originY: number;
     moved: boolean;
   } | null>(null);
+  const resizeStateRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startWidth: number;
+    right: number;
+  } | null>(null);
 
   const isMuted = volume === 0;
   const isPlayerClosed =
@@ -349,11 +365,16 @@ export default function SoundCloudPlayer() {
   }, [playerPosition]);
 
   useEffect(() => {
+    window.localStorage.setItem("evelasting-player-width", String(playerWidth));
+  }, [playerWidth]);
+
+  useEffect(() => {
     const keepInsideViewport = () => {
       setPlayerPosition((current) => {
         if (!current) return current;
-        const width = isCollapsed ? (window.innerWidth <= 760 ? 64 : 68) : window.innerWidth <= 1180 ? 300 : 340;
-        const height = isCollapsed ? (window.innerWidth <= 760 ? 64 : 68) : window.innerWidth <= 760 ? 116 : 520;
+        const shell = playerShellRef.current;
+        const width = shell?.offsetWidth ?? (isCollapsed ? (window.innerWidth <= 760 ? 64 : 68) : window.innerWidth <= 1180 ? 300 : playerWidth);
+        const height = shell?.offsetHeight ?? (isCollapsed ? (window.innerWidth <= 760 ? 64 : 68) : window.innerWidth <= 760 ? 116 : 520);
         return {
           x: Math.max(8, Math.min(current.x, window.innerWidth - width - 8)),
           y: Math.max(8, Math.min(current.y, window.innerHeight - height - 8)),
@@ -363,7 +384,65 @@ export default function SoundCloudPlayer() {
     window.addEventListener("resize", keepInsideViewport);
     keepInsideViewport();
     return () => window.removeEventListener("resize", keepInsideViewport);
-  }, [isCollapsed]);
+  }, [isCollapsed, playerWidth]);
+
+  const updatePlayerWidth = (nextWidth: number, rightEdge?: number) => {
+    const width = Math.max(PLAYER_MIN_WIDTH, Math.min(nextWidth, PLAYER_MAX_WIDTH));
+    setPlayerWidth(width);
+
+    if (rightEdge === undefined) return;
+    setPlayerPosition((current) => {
+      if (!current) return current;
+      const margin = 12;
+      return {
+        x: Math.max(margin, Math.min(rightEdge - width, window.innerWidth - width - margin)),
+        y: current.y,
+      };
+    });
+  };
+
+  const startPlayerResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (event.button !== 0 || window.innerWidth <= 1180) return;
+    event.stopPropagation();
+    const shell = playerShellRef.current;
+    if (!shell) return;
+    const bounds = shell.getBoundingClientRect();
+    resizeStateRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startWidth: bounds.width,
+      right: bounds.right,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    shell.classList.add("floating-player-resizing");
+    event.preventDefault();
+  };
+
+  const resizePlayer = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const resize = resizeStateRef.current;
+    if (!resize || resize.pointerId !== event.pointerId) return;
+    updatePlayerWidth(resize.startWidth + resize.startX - event.clientX, resize.right);
+  };
+
+  const stopPlayerResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const resize = resizeStateRef.current;
+    if (!resize || resize.pointerId !== event.pointerId) return;
+    resizeStateRef.current = null;
+    playerShellRef.current?.classList.remove("floating-player-resizing");
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  const resizePlayerWithKeyboard = (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+    if (!["ArrowLeft", "ArrowDown", "ArrowRight", "ArrowUp", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const bounds = playerShellRef.current?.getBoundingClientRect();
+    const rightEdge = bounds?.right;
+    if (event.key === "Home") updatePlayerWidth(PLAYER_MIN_WIDTH, rightEdge);
+    else if (event.key === "End") updatePlayerWidth(PLAYER_MAX_WIDTH, rightEdge);
+    else updatePlayerWidth(playerWidth + (["ArrowRight", "ArrowUp"].includes(event.key) ? 10 : -10), rightEdge);
+  };
 
   const startPlayerDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.button !== 0) return;
@@ -479,7 +558,7 @@ export default function SoundCloudPlayer() {
         ? Math.min(340, window.innerWidth - 16)
         : window.innerWidth <= 1180
           ? 300
-          : 340;
+          : playerWidth;
       const expandedHeight = window.innerWidth <= 760 ? 116 : 520;
       setPlayerPosition({
         x: Math.max(margin, Math.min(bounds.right - expandedWidth, window.innerWidth - expandedWidth - margin)),
@@ -1082,12 +1161,16 @@ export default function SoundCloudPlayer() {
           playerPosition ? "floating-player-positioned" : ""
         }`}
         style={
-          playerPosition
-            ? ({
-                "--floating-player-x": `${playerPosition.x}px`,
-                "--floating-player-y": `${playerPosition.y}px`,
-              } as CSSProperties)
-            : undefined
+          ({
+            "--floating-player-width": `${playerWidth}px`,
+            "--floating-player-scale": String(playerWidth / PLAYER_MAX_WIDTH),
+            ...(playerPosition
+              ? {
+                  "--floating-player-x": `${playerPosition.x}px`,
+                  "--floating-player-y": `${playerPosition.y}px`,
+                }
+              : {}),
+          } as CSSProperties)
         }
         onPointerDown={startPlayerDrag}
         onPointerMove={movePlayer}
@@ -1112,16 +1195,16 @@ export default function SoundCloudPlayer() {
             <strong>{currentTrack?.title || "Evelasting"}</strong>
           </button>
           <div className="mobile-player-transport">
-            <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={previousTrack} disabled={!isReady} aria-label="Previous track">
+            <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={previousTrack} disabled={!isReady} aria-label={t("previousTrack")}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5 8 12l10 7V5ZM5 5v14" /></svg>
             </button>
-            <button type="button" className="mobile-player-play" onPointerDown={(event) => event.stopPropagation()} onClick={togglePlayback} disabled={!isReady} aria-label={isPlaying ? "Pause track" : "Play track"}>
+            <button type="button" className="mobile-player-play" onPointerDown={(event) => event.stopPropagation()} onClick={togglePlayback} disabled={!isReady} aria-label={isPlaying ? t("pauseTrack") : t("playTrack")}>
               {isPlaying ? <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14" /></svg> : <svg viewBox="0 0 24 24" aria-hidden="true"><path className="is-filled" d="m8 5 11 7-11 7V5Z" /></svg>}
             </button>
-            <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={nextTrack} disabled={!isReady} aria-label="Next track">
+            <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={nextTrack} disabled={!isReady} aria-label={t("nextTrack")}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 10 7-10 7V5Zm13 0v14" /></svg>
             </button>
-            <button type="button" className="mobile-player-close" onPointerDown={(event) => event.stopPropagation()} onClick={closePlayer} aria-label="Close player" title="Close player">
+            <button type="button" className="mobile-player-close" onPointerDown={(event) => event.stopPropagation()} onClick={closePlayer} aria-label={t("closePlayer")} title={t("closePlayer")}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" /></svg>
             </button>
           </div>
@@ -1173,7 +1256,7 @@ export default function SoundCloudPlayer() {
           onMouseLeave={handleMouseLeave}
         >
           {!isCollapsed && (
-            <div className="floating-player-crown" data-no-drag="true" role="group" aria-label="Player window controls">
+            <div className="floating-player-crown" data-no-drag="true" role="group" aria-label={t("playerControls")}>
               <button
                 type="button"
                 className="floating-player-crown-button"
@@ -1192,8 +1275,8 @@ export default function SoundCloudPlayer() {
                 className="floating-player-crown-button floating-player-close"
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={closePlayer}
-                aria-label="Close player"
-                title="Close player"
+                aria-label={t("closePlayer")}
+                title={t("closePlayer")}
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M7 7l10 10M17 7 7 17" />
@@ -1297,7 +1380,7 @@ export default function SoundCloudPlayer() {
                   type="button"
                   onClick={previousTrack}
                   disabled={!isReady}
-                  aria-label="Previous track"
+                  aria-label={t("previousTrack")}
                   className="custom-player-side-button"
                 >
                   <svg
@@ -1320,7 +1403,7 @@ export default function SoundCloudPlayer() {
                   type="button"
                   onClick={togglePlayback}
                   disabled={!isReady}
-                  aria-label={isPlaying ? "Pause track" : "Play track"}
+                  aria-label={isPlaying ? t("pauseTrack") : t("playTrack")}
                   className="custom-player-play-button"
                 >
                   {isPlaying ? (
@@ -1354,7 +1437,7 @@ export default function SoundCloudPlayer() {
                   type="button"
                   onClick={nextTrack}
                   disabled={!isReady}
-                  aria-label="Next track"
+                  aria-label={t("nextTrack")}
                   className="custom-player-side-button"
                 >
                   <svg
@@ -1388,7 +1471,7 @@ export default function SoundCloudPlayer() {
                       changeVolume(Number(event.target.value))
                     }
                     disabled={!isReady}
-                    aria-label="Volume"
+                    aria-label={t("volume")}
                     className="custom-volume-range"
                     style={volumeStyle}
                   />
@@ -1400,7 +1483,7 @@ export default function SoundCloudPlayer() {
                   type="button"
                   onClick={toggleMute}
                   disabled={!isReady}
-                  aria-label={isMuted ? "Enable sound" : "Mute sound"}
+                  aria-label={isMuted ? t("enableSound") : t("muteSound")}
                   className="custom-player-volume-button"
                 >
                   {isMuted ? (
@@ -1456,7 +1539,7 @@ export default function SoundCloudPlayer() {
             </div>
 
             <div className="mt-5 flex items-center justify-between border-t border-white/[0.07] pt-4">
-              <span className="text-[8px] uppercase tracking-[0.25em] text-white/35">
+              <span className="custom-player-track-count text-[8px] uppercase tracking-[0.25em] text-white/35">
                 {tracks.length > 0
                   ? `${currentIndex + 1} / ${tracks.length}`
                   : t("loadingShort")}
@@ -1472,6 +1555,23 @@ export default function SoundCloudPlayer() {
               </a>
             </div>
           </div>
+          {!isCollapsed && (
+            <button
+              type="button"
+              className="floating-player-resize-handle"
+              onPointerDown={startPlayerResize}
+              onPointerMove={resizePlayer}
+              onPointerUp={stopPlayerResize}
+              onPointerCancel={stopPlayerResize}
+              onKeyDown={resizePlayerWithKeyboard}
+              aria-label={t("resizePlayer")}
+              title={t("resizePlayer")}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 19 19 5M5 13l8-8M11 19l8-8" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
     </>

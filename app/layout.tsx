@@ -2,7 +2,11 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 
 import { siteConfig, socialProfiles } from "@/lib/site";
+import DeferredSoundCloudPlayer from "./components/DeferredSoundCloudPlayer";
 import GoogleAnalytics from "./components/GoogleAnalytics";
+import { LanguageProvider } from "./components/LanguageContext";
+import PerformanceMotionConfig from "./components/PerformanceMotionConfig";
+import { PlayerProvider } from "./components/PlayerContext";
 import PwaRegistration from "./components/PwaRegistration";
 import "./globals.css";
 
@@ -130,9 +134,16 @@ export default function RootLayout({
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>
-        {children}
+        <LanguageProvider>
+          <PlayerProvider>
+            <PerformanceMotionConfig>
+              {children}
+              <DeferredSoundCloudPlayer />
+            </PerformanceMotionConfig>
+          </PlayerProvider>
+          <GoogleAnalytics />
+        </LanguageProvider>
         <PwaRegistration />
-        <GoogleAnalytics />
         <Analytics />
         <script
           type="application/ld+json"

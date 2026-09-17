@@ -10,6 +10,7 @@ import {
   initializeAnalytics,
   trackAnalyticsEvent,
 } from "@/lib/analytics";
+import { useLanguage } from "./LanguageContext";
 
 type Consent = "accepted" | "declined" | null;
 
@@ -25,6 +26,7 @@ function deleteAnalyticsCookies() {
 }
 
 export default function GoogleAnalytics() {
+  const { t } = useLanguage();
   const [consent, setConsent] = useState<Consent>(null);
   const [isChoiceKnown, setIsChoiceKnown] = useState(false);
   const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
@@ -118,23 +120,22 @@ export default function GoogleAnalytics() {
 
       {shouldShowDialog && (
         <section
-          aria-label="Analytics cookie preferences"
+          aria-label={t("analyticsPreferences")}
           className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-[100] mx-auto max-h-[calc(100svh-1.5rem)] max-w-3xl overflow-y-auto rounded-2xl border border-white/15 bg-[#111]/95 p-4 text-white shadow-2xl shadow-black/60 backdrop-blur-md sm:inset-x-4 sm:p-6"
         >
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="max-w-xl">
               <h2 className="text-base font-semibold tracking-wide">
-                Analytics cookies
+                {t("analyticsCookies")}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-white/70">
-                Evelasting uses Google Analytics to understand site visits and
-                improve the experience. Analytics only starts after you accept.
+                {t("analyticsDescription")}
               </p>
               <Link
                 href="/privacy"
                 className="mt-2 inline-block text-xs text-white/50 underline decoration-white/25 underline-offset-4 transition hover:text-white"
               >
-                Privacy Policy
+                {t("privacyPolicy")}
               </Link>
             </div>
             <div className="flex shrink-0 flex-col gap-2 min-[420px]:flex-row">
@@ -143,14 +144,14 @@ export default function GoogleAnalytics() {
                 onClick={() => saveConsent("declined")}
                 className="min-h-11 rounded-full border border-white/25 px-5 py-2.5 text-sm font-semibold transition hover:border-white/55 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
-                Decline
+                {t("decline")}
               </button>
               <button
                 type="button"
                 onClick={() => saveConsent("accepted")}
                 className="min-h-11 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-white/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
-                Accept
+                {t("accept")}
               </button>
             </div>
           </div>
@@ -163,7 +164,7 @@ export default function GoogleAnalytics() {
           onClick={() => setIsPreferencesOpen(true)}
           className="cookie-preferences-button fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-3 z-[90] min-h-10 rounded-full border border-white/15 bg-black/75 px-3 py-1.5 text-[11px] font-medium text-white/60 backdrop-blur transition hover:border-white/35 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
-          Cookies
+          {t("cookies")}
         </button>
       )}
     </>

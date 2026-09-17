@@ -9,6 +9,8 @@ import {
   type ReactNode,
 } from "react";
 
+import { releases } from "./Music/releases";
+
 export type PlayerTrack = {
   id: string;
   title: string;
@@ -44,6 +46,22 @@ type PlayerContextValue = {
 
 const PlayerContext = createContext<PlayerContextValue | null>(null);
 
+const catalogTracks: PlayerTrack[] = [...releases]
+  .sort((left, right) => left.playlistIndex - right.playlistIndex)
+  .map((release) => ({
+    id: `catalog-${release.id}`,
+    title: release.title,
+    artwork: release.cover,
+    permalink: release.soundcloud,
+    artist: release.artist,
+    index: release.playlistIndex,
+    total: releases.length,
+    duration: 0,
+    description: release.description,
+    genre: release.genre,
+    publishedAt: `${release.year}-01-01`,
+  }));
+
 export function PlayerProvider({ children }: { children: ReactNode }) {
   const [playRequested, setPlayRequested] = useState(0);
   const [toggleRequested, setToggleRequested] = useState(0);
@@ -55,7 +73,9 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const [currentTrack, setCurrentTrackState] = useState<PlayerTrack | null>(
     null,
   );
-  const [tracks, setTracksState] = useState<PlayerTrack[]>([]);
+  // Render the verified catalogue immediately. The SoundCloud widget replaces
+  // these entries with live duration and metadata as soon as it is ready.
+  const [tracks, setTracksState] = useState<PlayerTrack[]>(catalogTracks);
   const [previewArtwork, setPreviewArtworkState] = useState<string | null>(
     null,
   );

@@ -13,6 +13,22 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i1.sndcdn.com",
+        pathname: "/artworks-**",
+      },
+    ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/music/yhhb",
+        destination: "/music/unnv-evelasting-phonk",
+        permanent: true,
+      },
+    ];
   },
   async headers() {
     return [

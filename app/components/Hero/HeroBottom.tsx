@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "motion/react";
 import { usePlayer } from "../PlayerContext";
 import { useLanguage } from "../LanguageContext";
@@ -39,7 +40,7 @@ export default function HeroBottom({ shouldReduceMotion }: HeroBottomProps) {
 
       <motion.div initial={shouldReduceMotion ? false : { opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 1.15, ease: HOVER_EASE }} className="order-3 hidden min-w-0 flex-col items-start text-left sm:flex sm:justify-self-start">
         <p className="max-w-[220px] text-[8px] uppercase leading-5 tracking-[0.24em] text-white/72 md:text-[9px] md:tracking-[0.34em]">{t("soundReturns")}</p>
-        <a href="#story" className="group mt-4 inline-flex items-center gap-3 text-[7px] uppercase tracking-[0.24em] text-white/68 transition-colors duration-300 hover:text-white md:text-[8px] md:tracking-[0.3em]"><span className="h-px w-6 bg-white/45 transition-all duration-500 group-hover:w-10 group-hover:bg-red-500" />{t("discover")}</a>
+        <Link href="/about" className="group mt-4 inline-flex items-center gap-3 text-[7px] uppercase tracking-[0.24em] text-white/68 transition-colors duration-300 hover:text-white md:text-[8px] md:tracking-[0.3em]"><span className="h-px w-6 bg-white/45 transition-all duration-500 group-hover:w-10 group-hover:bg-red-500" />{t("discover")}</Link>
       </motion.div>
     </div>
   );
