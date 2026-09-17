@@ -54,14 +54,15 @@ export default function LatestReleases() {
           </p>
           <Link
             href="/music"
-            className="group mt-5 inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-[rgb(var(--release-accent)/.72)] bg-[rgb(var(--release-accent)/.82)] px-6 py-3 text-[10px] font-bold uppercase tracking-[.2em] text-white shadow-[0_0_36px_rgb(var(--release-accent)/.26)] transition duration-300 hover:-translate-y-0.5 hover:bg-[rgb(var(--release-accent))] hover:shadow-[0_0_48px_rgb(var(--release-accent)/.42)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            className="group mt-5 inline-flex min-h-12 items-center justify-center gap-5 rounded-full border border-white/20 bg-black/55 py-1.5 pl-6 pr-1.5 text-[10px] font-semibold uppercase tracking-[.2em] text-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,.07),0_14px_42px_rgba(0,0,0,.34)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:border-[rgb(var(--release-accent)/.62)] hover:bg-white/[.07] hover:text-white hover:shadow-[inset_0_1px_0_rgba(255,255,255,.1),0_0_34px_rgb(var(--release-accent)/.2)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
+            {t("viewAllReleases")}
             <span
               aria-hidden="true"
-              className="h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,.9)]"
-            />
-            {t("viewAllReleases")}
-            <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              className="grid h-9 w-9 place-items-center rounded-full bg-white text-sm text-black shadow-[0_4px_16px_rgba(0,0,0,.3)] transition duration-300 group-hover:translate-x-0.5 group-hover:bg-[rgb(var(--release-accent))] group-hover:text-white"
+            >
+              →
+            </span>
           </Link>
         </div>
       </div>
