@@ -46,9 +46,22 @@ export default function LatestReleases() {
             {t("viewAllReleases")}
             <span
               aria-hidden="true"
-              className="grid h-9 w-9 place-items-center rounded-full bg-white text-sm text-black shadow-[0_4px_16px_rgba(0,0,0,.3)] transition duration-300 group-hover:translate-x-0.5 group-hover:bg-[rgb(var(--release-accent))] group-hover:text-white"
+              className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-black shadow-[0_4px_16px_rgba(0,0,0,.3)] transition duration-300 group-hover:translate-x-0.5 group-hover:bg-[rgb(var(--release-accent))] group-hover:text-white"
             >
-              →
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="block h-4 w-4"
+              >
+                <path d="M5 12h14" />
+                <path d="m13 6 6 6-6 6" />
+              </svg>
             </span>
           </Link>
         </div>
