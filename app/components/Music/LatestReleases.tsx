@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
 import { useLanguage } from "../LanguageContext";
 import { usePlayer } from "../PlayerContext";
@@ -11,20 +11,7 @@ import ReleaseCard from "./ReleaseCard";
 export default function LatestReleases() {
   const { tracks, currentTrack, isPlaying, playTrack, setPreviewArtwork } = usePlayer();
   const { t } = useLanguage();
-  const latestTracks = useMemo(
-    () =>
-      [...tracks]
-        .sort((left, right) => {
-          const dateDifference =
-            Date.parse(right.publishedAt) - Date.parse(left.publishedAt);
-
-          return Number.isNaN(dateDifference)
-            ? left.index - right.index
-            : dateDifference || left.index - right.index;
-        })
-        .slice(0, 3),
-    [tracks],
-  );
+  const latestTracks = tracks.slice(0, 3);
 
   const handlePlay = useCallback((index: number) => playTrack(index), [playTrack]);
   const handlePreview = useCallback(

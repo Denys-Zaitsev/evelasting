@@ -5,7 +5,7 @@ import Link from "next/link";
 import { memo } from "react";
 import { useLanguage } from "../LanguageContext";
 import type { PlayerTrack } from "../PlayerContext";
-import { getReleaseByTitle, slugifyReleaseTitle } from "./releases";
+import { getReleaseByTitle } from "./releases";
 
 function formatYear(value: string) {
   if (!value) return "—";
@@ -25,8 +25,7 @@ type ReleaseCardProps = {
 function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: ReleaseCardProps) {
   const { t } = useLanguage();
   const release = getReleaseByTitle(track.title);
-  const releaseSlug = release?.slug || slugifyReleaseTitle(track.title);
-  const releaseHref = `/music/${releaseSlug}`;
+  const releaseHref = release ? `/music/${release.slug}` : track.permalink;
 
   return (
     <article
@@ -54,7 +53,7 @@ function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: Rel
 
       <div className="mt-3 flex min-w-0 items-start justify-between gap-3 sm:mt-4 sm:gap-4">
         <div className="min-w-0 flex-1">
-          <Link href={releaseHref} className="block max-w-full text-left"><h4 className="truncate text-sm font-medium text-white/90 transition-colors group-hover:text-white">{track.title}</h4></Link>
+          <Link href={releaseHref} target={release ? undefined : "_blank"} rel={release ? undefined : "noreferrer"} className="block max-w-full text-left"><h4 className="truncate text-sm font-medium text-white/90 transition-colors group-hover:text-white">{track.title}</h4></Link>
           <p className="mt-1.5 truncate text-[8px] uppercase tracking-[0.18em] text-white/40 sm:mt-2 sm:text-[9px] sm:tracking-[0.22em]">{track.genre || t("music")}</p>
         </div>
         <span className="shrink-0 pt-0.5 text-[9px] text-white/35 sm:text-[10px]">{formatYear(track.publishedAt)}</span>
@@ -62,6 +61,8 @@ function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: Rel
       <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-2 sm:mt-3">
         <Link
           href={releaseHref}
+          target={release ? undefined : "_blank"}
+          rel={release ? undefined : "noreferrer"}
           className="inline-flex items-center gap-2 rounded-full border border-white/12 px-3 py-1.5 text-[8px] font-semibold uppercase tracking-[0.18em] text-white/70 transition hover:border-white/30 hover:text-white sm:text-[9px] sm:tracking-[0.22em]"
         >
           {t("openRelease")} <span aria-hidden="true">→</span>
