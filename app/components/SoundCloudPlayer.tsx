@@ -3,6 +3,7 @@
 import Script from "next/script";
 import {
   type CSSProperties,
+  type KeyboardEvent as ReactKeyboardEvent,
   type MouseEvent,
   type PointerEvent as ReactPointerEvent,
   useCallback,
@@ -114,6 +115,9 @@ const DEFAULT_ACCENT: RGB = {
   g: 28,
   b: 65,
 };
+
+const PLAYER_MIN_WIDTH = 270;
+const PLAYER_MAX_WIDTH = 340;
 
 function formatTime(milliseconds: number) {
   if (!Number.isFinite(milliseconds) || milliseconds < 0) {
@@ -303,6 +307,12 @@ export default function SoundCloudPlayer() {
   const [position, setPosition] = useState(0);
   const [volume, setVolume] = useState(70);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [playerWidth, setPlayerWidth] = useState(() => {
+    const saved = Number(window.localStorage.getItem("evelasting-player-width"));
+    return Number.isFinite(saved)
+      ? Math.max(PLAYER_MIN_WIDTH, Math.min(saved, PLAYER_MAX_WIDTH))
+      : PLAYER_MAX_WIDTH;
+  });
   const [closedAtRequests, setClosedAtRequests] = useState<{
     play: number;
     toggle: number;
@@ -331,6 +341,12 @@ export default function SoundCloudPlayer() {
     originY: number;
     moved: boolean;
   } | null>(null);
+  const resizeStateRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startWidth: number;
+    right: number;
+  } | null>(null);
 
   const isMuted = volume === 0;
   const isPlayerClosed =
@@ -349,11 +365,16 @@ export default function SoundCloudPlayer() {
   }, [playerPosition]);
 
   useEffect(() => {
+    window.localStorage.setItem("evelasting-player-width", String(playerWidth));
+  }, [playerWidth]);
+
+  useEffect(() => {
     const keepInsideViewport = () => {
       setPlayerPosition((current) => {
         if (!current) return current;
-        const width = isCollapsed ? (window.innerWidth <= 760 ? 64 : 68) : window.innerWidth <= 1180 ? 300 : 340;
-        const height = isCollapsed ? (window.innerWidth <= 760 ? 64 : 68) : window.innerWidth <= 760 ? 116 : 520;
+        const shell = playerShellRef.current;
+        const width = shell?.offsetWidth ?? (isCollapsed ? (window.innerWidth <= 760 ? 64 : 68) : window.innerWidth <= 1180 ? 300 : playerWidth);
+        const height = shell?.offsetHeight ?? (isCollapsed ? (window.innerWidth <= 760 ? 64 : 68) : window.innerWidth <= 760 ? 116 : 520);
         return {
           x: Math.max(8, Math.min(current.x, window.innerWidth - width - 8)),
           y: Math.max(8, Math.min(current.y, window.innerHeight - height - 8)),
@@ -363,7 +384,65 @@ export default function SoundCloudPlayer() {
     window.addEventListener("resize", keepInsideViewport);
     keepInsideViewport();
     return () => window.removeEventListener("resize", keepInsideViewport);
-  }, [isCollapsed]);
+  }, [isCollapsed, playerWidth]);
+
+  const updatePlayerWidth = (nextWidth: number, rightEdge?: number) => {
+    const width = Math.max(PLAYER_MIN_WIDTH, Math.min(nextWidth, PLAYER_MAX_WIDTH));
+    setPlayerWidth(width);
+
+    if (rightEdge === undefined) return;
+    setPlayerPosition((current) => {
+      if (!current) return current;
+      const margin = 12;
+      return {
+        x: Math.max(margin, Math.min(rightEdge - width, window.innerWidth - width - margin)),
+        y: current.y,
+      };
+    });
+  };
+
+  const startPlayerResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (event.button !== 0 || window.innerWidth <= 1180) return;
+    event.stopPropagation();
+    const shell = playerShellRef.current;
+    if (!shell) return;
+    const bounds = shell.getBoundingClientRect();
+    resizeStateRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startWidth: bounds.width,
+      right: bounds.right,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    shell.classList.add("floating-player-resizing");
+    event.preventDefault();
+  };
+
+  const resizePlayer = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const resize = resizeStateRef.current;
+    if (!resize || resize.pointerId !== event.pointerId) return;
+    updatePlayerWidth(resize.startWidth + resize.startX - event.clientX, resize.right);
+  };
+
+  const stopPlayerResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const resize = resizeStateRef.current;
+    if (!resize || resize.pointerId !== event.pointerId) return;
+    resizeStateRef.current = null;
+    playerShellRef.current?.classList.remove("floating-player-resizing");
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  const resizePlayerWithKeyboard = (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+    if (!["ArrowLeft", "ArrowDown", "ArrowRight", "ArrowUp", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const bounds = playerShellRef.current?.getBoundingClientRect();
+    const rightEdge = bounds?.right;
+    if (event.key === "Home") updatePlayerWidth(PLAYER_MIN_WIDTH, rightEdge);
+    else if (event.key === "End") updatePlayerWidth(PLAYER_MAX_WIDTH, rightEdge);
+    else updatePlayerWidth(playerWidth + (["ArrowRight", "ArrowUp"].includes(event.key) ? 10 : -10), rightEdge);
+  };
 
   const startPlayerDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.button !== 0) return;
@@ -479,7 +558,7 @@ export default function SoundCloudPlayer() {
         ? Math.min(340, window.innerWidth - 16)
         : window.innerWidth <= 1180
           ? 300
-          : 340;
+          : playerWidth;
       const expandedHeight = window.innerWidth <= 760 ? 116 : 520;
       setPlayerPosition({
         x: Math.max(margin, Math.min(bounds.right - expandedWidth, window.innerWidth - expandedWidth - margin)),
@@ -1082,12 +1161,15 @@ export default function SoundCloudPlayer() {
           playerPosition ? "floating-player-positioned" : ""
         }`}
         style={
-          playerPosition
-            ? ({
-                "--floating-player-x": `${playerPosition.x}px`,
-                "--floating-player-y": `${playerPosition.y}px`,
-              } as CSSProperties)
-            : undefined
+          ({
+            "--floating-player-width": `${playerWidth}px`,
+            ...(playerPosition
+              ? {
+                  "--floating-player-x": `${playerPosition.x}px`,
+                  "--floating-player-y": `${playerPosition.y}px`,
+                }
+              : {}),
+          } as CSSProperties)
         }
         onPointerDown={startPlayerDrag}
         onPointerMove={movePlayer}
@@ -1472,6 +1554,23 @@ export default function SoundCloudPlayer() {
               </a>
             </div>
           </div>
+          {!isCollapsed && (
+            <button
+              type="button"
+              className="floating-player-resize-handle"
+              onPointerDown={startPlayerResize}
+              onPointerMove={resizePlayer}
+              onPointerUp={stopPlayerResize}
+              onPointerCancel={stopPlayerResize}
+              onKeyDown={resizePlayerWithKeyboard}
+              aria-label={t("resizePlayer")}
+              title={t("resizePlayer")}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 19 19 5M5 13l8-8M11 19l8-8" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
     </>
