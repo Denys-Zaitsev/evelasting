@@ -71,7 +71,7 @@ export default function LatestReleases() {
         <div className="release-library release-library-latest relative mt-10 overflow-hidden rounded-[34px] border border-white/10 bg-black/45 p-4 shadow-[0_34px_120px_rgba(0,0,0,.62)] backdrop-blur-xl md:p-7">
           <div className="release-library-scroll" aria-label={t("latestReleases")}>
             <div className="release-library-grid">
-              {latestTracks.map((track) => (
+              {latestTracks.map((track, displayIndex) => (
                 <motion.div
                   key={track.id}
                   className="release-library-card"
@@ -82,7 +82,7 @@ export default function LatestReleases() {
                 >
                   <ReleaseCard
                     track={track}
-                    index={track.index}
+                    index={displayIndex}
                     active={currentTrack?.id === track.id}
                     isPlaying={Boolean(currentTrack?.id === track.id && isPlaying)}
                     onPlay={handlePlay}
