@@ -188,7 +188,7 @@ export default function AboutExperience() {
             initial={reducedMotion ? false : { opacity: 0, scale: 0.965, x: 24 }}
             animate={reducedMotion ? undefined : { opacity: 1, scale: 1, x: 0 }}
             transition={{ ...revealTransition, delay: 0.12 }}
-            className="relative mx-auto aspect-square w-full max-w-[41rem]"
+            className="relative mx-auto aspect-square w-[92%] max-w-[38rem]"
           >
             <motion.div
               aria-hidden
@@ -198,11 +198,11 @@ export default function AboutExperience() {
             />
             <motion.div
               aria-hidden
-              className="absolute -inset-1 rounded-full bg-[conic-gradient(from_0deg,rgba(139,92,246,.18),rgba(255,255,255,.55),rgba(185,28,65,.5),rgba(139,92,246,.18))] blur-[1px]"
+              className="absolute -inset-1 rounded-full bg-[conic-gradient(from_0deg,rgba(139,92,246,.18),rgba(124,58,237,.42),rgba(185,28,65,.5),rgba(139,92,246,.18))] blur-[1px]"
               animate={reducedMotion ? undefined : { rotate: 360 }}
               transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
             />
-            <div className="relative h-full w-full overflow-hidden rounded-full border border-white/15 bg-white/[0.025] shadow-[0_40px_130px_rgba(69,20,170,.34)]">
+            <div className="relative h-full w-full overflow-hidden rounded-full border border-violet-300/15 bg-white/[0.025] shadow-[0_40px_130px_rgba(69,20,170,.34)]">
               <Image
                 src="/about/denys-zaitsev.webp"
                 alt={copy.portraitAlt}
