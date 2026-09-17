@@ -1,27 +1,24 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { useLanguage } from "../LanguageContext";
 import { usePlayer } from "../PlayerContext";
 import ReleaseCard from "./ReleaseCard";
 
-type ReleaseFilter = "all" | "phonk" | "chill" | "aggressive" | "collab" | "single";
+type ReleaseFilter = "all" | "phonk" | "chill" | "collab";
 
 function matchesFilter(title: string, genre: string, filter: ReleaseFilter) {
   if (filter === "all") return true;
   const value = `${title} ${genre}`.toLowerCase();
-  if (filter === "phonk") return value.includes("phonk");
-  if (filter === "chill") return /chill|ambient|wave|dream|sunset/.test(value);
-  if (filter === "aggressive") return /aggressive|drift|hard|rage|rap|trap/.test(value);
-  if (filter === "collab") return /feat\.|featuring|&| x |collab/.test(value);
-  return !/feat\.|featuring|&| x |collab/.test(value);
+  if (filter === "phonk") return /phonk|hip-hop|rap/.test(value);
+  if (filter === "chill") return /chill|ambient|wave|dream|sunset|silence|violin/.test(value);
+  return /feat\.|featuring|&| x |collab/.test(value);
 }
 
 export default function Discography() {
   const { tracks, currentTrack, isReady, isPlaying, playTrack, setPreviewArtwork } = usePlayer();
   const { t } = useLanguage();
-  const gridRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<ReleaseFilter>("all");
 
@@ -33,13 +30,6 @@ export default function Discography() {
     });
   }, [tracks, query, filter]);
 
-  const scrollByRows = useCallback((direction: number) => {
-    const grid = gridRef.current;
-    if (!grid) return;
-    grid.scrollBy({ top: direction * Math.max(420, grid.clientHeight * 0.85), behavior: "smooth" });
-  }, []);
-
-
   const handlePlay = useCallback((index: number) => playTrack(index), [playTrack]);
   const handlePreview = useCallback((artwork: string | null) => setPreviewArtwork(artwork), [setPreviewArtwork]);
 
@@ -48,9 +38,7 @@ export default function Discography() {
     { value: "all", label: t("filterAll") },
     { value: "phonk", label: "Phonk" },
     { value: "chill", label: "Chill" },
-    { value: "aggressive", label: t("filterAggressive") },
     { value: "collab", label: t("filterCollab") },
-    { value: "single", label: t("filterSingle") },
   ];
 
   return (
@@ -86,12 +74,7 @@ export default function Discography() {
             </div>
           </div>
 
-          <button type="button" aria-label={t("previousReleases")} onClick={() => scrollByRows(-1)} className="release-library-arrow release-library-arrow-up">↑</button>
-          <button type="button" aria-label={t("nextReleases")} onClick={() => scrollByRows(1)} className="release-library-arrow release-library-arrow-down">↓</button>
-          <div aria-hidden className="release-library-fade release-library-fade-top" />
-          <div aria-hidden className="release-library-fade release-library-fade-bottom" />
-
-          <div ref={gridRef} className="release-library-scroll" tabIndex={0} aria-label={t("allReleases")}>
+          <div className="release-library-scroll" aria-label={t("allReleases")}>
             {visibleTracks.length ? (
               <div className="release-library-grid">
                 {visibleTracks.map((track) => {
@@ -103,8 +86,6 @@ export default function Discography() {
               <div className="release-library-empty">{t("noReleasesFound")}</div>
             )}
           </div>
-
-          <p className="mt-4 text-center text-[10px] uppercase tracking-[.22em] text-white/25">{t("verticalHint")}</p>
         </div>
       ) : (
         <div className="mt-10 rounded-[28px] border border-white/10 bg-white/[.025] px-6 py-16 text-center text-sm text-white/35">{t("loading")}</div>

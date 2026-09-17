@@ -84,7 +84,7 @@ export default function FeaturedRelease({
             onHoverStart={() => setPreviewArtwork(targetTrack?.artwork || release.cover)}
             onHoverEnd={() => setPreviewArtwork(null)}
             disabled={!targetTrack}
-            aria-label={`Play ${release.title}`}
+            aria-label={`${t("playTrack")}: ${release.title}`}
             className="group relative block aspect-square w-full overflow-hidden rounded-[30px] border border-white/10 bg-neutral-950 text-left shadow-[0_45px_140px_rgba(0,0,0,0.7)] outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:cursor-wait"
             whileHover={{
               y: -8,
@@ -180,7 +180,7 @@ export default function FeaturedRelease({
               className="rounded-2xl border border-white/10 bg-white/[0.035] p-5 backdrop-blur-md"
             >
               <p className="text-[9px] uppercase tracking-[0.3em] text-white/35">
-                Released
+                {t("published")}
               </p>
 
               <p className="mt-3 text-lg font-medium text-white/90">
@@ -196,7 +196,7 @@ export default function FeaturedRelease({
               className="rounded-2xl border border-white/10 bg-white/[0.035] p-5 backdrop-blur-md"
             >
               <p className="text-[9px] uppercase tracking-[0.3em] text-white/35">
-                Genre
+                {t("genre")}
               </p>
 
               <p className="mt-3 text-lg font-medium text-white/90">
@@ -252,7 +252,7 @@ export default function FeaturedRelease({
                 href={`/music/${release.slug}`}
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/12 bg-white/[0.035] px-6 text-[9px] font-semibold uppercase tracking-[0.22em] text-white/70 transition hover:border-white/30 hover:bg-white/[0.07] hover:text-white"
               >
-                Release page
+                {t("releasePage")}
               </Link>
 
               <motion.a
@@ -265,7 +265,7 @@ export default function FeaturedRelease({
                 }}
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/12 bg-transparent px-6 text-[9px] font-semibold uppercase tracking-[0.22em] text-white/55 transition hover:border-white/30 hover:text-white"
               >
-                All releases
+                {t("allReleases")}
               </motion.a>
             </div>
           </div>

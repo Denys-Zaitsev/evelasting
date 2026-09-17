@@ -26,7 +26,7 @@ function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: Rel
   const { t } = useLanguage();
   const release = getReleaseByTitle(track.title);
   const releaseSlug = release?.slug || slugifyReleaseTitle(track.title);
-  const releaseHref = `/music/${releaseSlug}?track=${track.index}`;
+  const releaseHref = `/music/${releaseSlug}`;
 
   return (
     <article
@@ -36,7 +36,7 @@ function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: Rel
       onFocus={() => onPreview(track.artwork || null)}
       onBlur={() => onPreview(null)}
     >
-      <button type="button" onClick={() => onPlay(track.index)} aria-label={`Play ${track.title}`} className="block w-full rounded-[24px] text-left outline-none focus-visible:ring-2 focus-visible:ring-white/60">
+      <button type="button" onClick={() => onPlay(track.index)} aria-label={`${t("playTrack")}: ${track.title}`} className="block w-full rounded-[24px] text-left outline-none focus-visible:ring-2 focus-visible:ring-white/60">
         <div className={`relative aspect-square overflow-hidden rounded-[24px] border bg-neutral-950 shadow-[0_18px_50px_rgba(0,0,0,0.34)] transition-[border-color,box-shadow] duration-300 ${active ? "border-white/35 shadow-[0_24px_70px_rgb(var(--player-accent)/0.18)]" : "border-white/10 group-hover:border-white/20"}`}>
           {track.artwork ? (
             <Image src={track.artwork} alt={`${track.title} cover`} fill unoptimized loading="lazy" sizes="(max-width: 620px) calc(100vw - 72px), (max-width: 980px) 42vw, 28vw" className="object-cover transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.025]" />
@@ -64,7 +64,7 @@ function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: Rel
           href={releaseHref}
           className="inline-flex items-center gap-2 rounded-full border border-white/12 px-3 py-1.5 text-[8px] font-semibold uppercase tracking-[0.18em] text-white/70 transition hover:border-white/30 hover:text-white sm:text-[9px] sm:tracking-[0.22em]"
         >
-          Open release <span aria-hidden="true">→</span>
+          {t("openRelease")} <span aria-hidden="true">→</span>
         </Link>
         <a href={track.permalink} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[8px] font-semibold uppercase tracking-[0.18em] text-white/40 transition-colors hover:text-white sm:text-[9px] sm:tracking-[0.22em]">SoundCloud <span aria-hidden="true">↗</span></a>
       </div>

@@ -1911,7 +1911,7 @@ body.mobile-menu-open { overflow: hidden; }
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 22px;
-  padding-right: 48px;
+  padding-right: 0;
 }
 
 .release-search {
@@ -1975,10 +1975,10 @@ body.mobile-menu-open { overflow: hidden; }
 }
 
 .release-library-scroll {
-  max-height: min(1040px, 112vh);
-  padding: 10px 42px 18px 10px;
-  overscroll-behavior: contain;
-  scroll-snap-type: y proximity;
+  max-height: none;
+  overflow: visible;
+  padding: 10px;
+  scroll-snap-type: none;
 }
 .release-library-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2006,24 +2006,23 @@ body.mobile-menu-open { overflow: hidden; }
 
 @media (min-width: 1180px) {
   .release-library-scroll {
-    /* Exactly two generous rows of three cards remain visible. */
-    max-height: 1010px;
+    max-height: none;
   }
   .release-library-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 980px) {
-  .release-library-toolbar { align-items: stretch; flex-direction: column; padding-right: 42px; }
+  .release-library-toolbar { align-items: stretch; flex-direction: column; padding-right: 0; }
   .release-search { width: 100%; }
   .release-library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .release-library-scroll { max-height: 920px; }
+  .release-library-scroll { max-height: none; }
 }
 
 @media (max-width: 620px) {
   .release-library { border-radius: 24px; padding: 12px; }
   .release-library-toolbar { padding-right: 0; }
   .release-library-grid { grid-template-columns: 1fr; gap: 16px; }
-  .release-library-scroll { max-height: 760px; padding-right: 24px; }
+  .release-library-scroll { max-height: none; padding-right: 10px; }
   .release-library-arrow { display: none; }
   .release-library-fade-top { top: 150px; }
 }

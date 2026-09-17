@@ -9,7 +9,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified,
     changeFrequency: "monthly",
     priority: 0.7,
-    images: [`${siteConfig.url}${encodeURI(release.cover)}`],
+    images: [
+      release.cover.startsWith("http")
+        ? release.cover
+        : `${siteConfig.url}${encodeURI(release.cover)}`,
+    ],
   }));
 
   return [

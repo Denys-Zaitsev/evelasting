@@ -91,7 +91,7 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={handleLogoClick}
-          aria-label="Return to the Evelasting homepage"
+          aria-label={t("returnHome")}
           className="site-wordmark
             group/logo relative
             text-sm font-semibold tracking-[0.26em] sm:text-base sm:tracking-[0.34em] lg:text-lg lg:tracking-[0.4em]
@@ -125,7 +125,7 @@ export default function Navbar() {
         </Link>
 
         <nav
-          aria-label="Main navigation"
+          aria-label={t("mainNavigation")}
           className="
             hidden gap-10
             text-sm uppercase tracking-[0.2em]
@@ -181,12 +181,12 @@ export default function Navbar() {
         <button
           type="button"
           className="mobile-menu-button grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-black/35 text-white md:hidden"
-          aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
+          aria-label={isMenuOpen ? t("closeNavigation") : t("openNavigation")}
           aria-expanded={isMenuOpen}
           aria-controls="mobile-navigation"
           onClick={() => setIsMenuOpen((value) => !value)}
         >
-          <span className="sr-only">{isMenuOpen ? "Close" : "Menu"}</span>
+          <span className="sr-only">{isMenuOpen ? t("close") : t("menu")}</span>
           <span aria-hidden="true" className="relative block h-4 w-5">
             <span className={`absolute left-0 top-0 h-px w-5 bg-current transition ${isMenuOpen ? "translate-y-[7px] rotate-45" : ""}`} />
             <span className={`absolute left-0 top-[7px] h-px w-5 bg-current transition ${isMenuOpen ? "opacity-0" : ""}`} />
@@ -202,7 +202,7 @@ export default function Navbar() {
           isMenuOpen ? "visible opacity-100" : "invisible absolute w-full -translate-y-2 opacity-0"
         }`}
       >
-        <nav aria-label="Mobile navigation" className="mx-auto grid max-w-7xl gap-1">
+        <nav aria-label={t("mobileNavigation")} className="mx-auto grid max-w-7xl gap-1">
           {navigation.map((item) => (
             <Link
               key={item.href}

@@ -141,9 +141,9 @@ export default function RootLayout({
               <DeferredSoundCloudPlayer />
             </PerformanceMotionConfig>
           </PlayerProvider>
+          <GoogleAnalytics />
         </LanguageProvider>
         <PwaRegistration />
-        <GoogleAnalytics />
         <Analytics />
         <script
           type="application/ld+json"

@@ -1195,16 +1195,16 @@ export default function SoundCloudPlayer() {
             <strong>{currentTrack?.title || "Evelasting"}</strong>
           </button>
           <div className="mobile-player-transport">
-            <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={previousTrack} disabled={!isReady} aria-label="Previous track">
+            <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={previousTrack} disabled={!isReady} aria-label={t("previousTrack")}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5 8 12l10 7V5ZM5 5v14" /></svg>
             </button>
-            <button type="button" className="mobile-player-play" onPointerDown={(event) => event.stopPropagation()} onClick={togglePlayback} disabled={!isReady} aria-label={isPlaying ? "Pause track" : "Play track"}>
+            <button type="button" className="mobile-player-play" onPointerDown={(event) => event.stopPropagation()} onClick={togglePlayback} disabled={!isReady} aria-label={isPlaying ? t("pauseTrack") : t("playTrack")}>
               {isPlaying ? <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14" /></svg> : <svg viewBox="0 0 24 24" aria-hidden="true"><path className="is-filled" d="m8 5 11 7-11 7V5Z" /></svg>}
             </button>
-            <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={nextTrack} disabled={!isReady} aria-label="Next track">
+            <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={nextTrack} disabled={!isReady} aria-label={t("nextTrack")}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 10 7-10 7V5Zm13 0v14" /></svg>
             </button>
-            <button type="button" className="mobile-player-close" onPointerDown={(event) => event.stopPropagation()} onClick={closePlayer} aria-label="Close player" title="Close player">
+            <button type="button" className="mobile-player-close" onPointerDown={(event) => event.stopPropagation()} onClick={closePlayer} aria-label={t("closePlayer")} title={t("closePlayer")}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" /></svg>
             </button>
           </div>
@@ -1256,7 +1256,7 @@ export default function SoundCloudPlayer() {
           onMouseLeave={handleMouseLeave}
         >
           {!isCollapsed && (
-            <div className="floating-player-crown" data-no-drag="true" role="group" aria-label="Player window controls">
+            <div className="floating-player-crown" data-no-drag="true" role="group" aria-label={t("playerControls")}>
               <button
                 type="button"
                 className="floating-player-crown-button"
@@ -1275,8 +1275,8 @@ export default function SoundCloudPlayer() {
                 className="floating-player-crown-button floating-player-close"
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={closePlayer}
-                aria-label="Close player"
-                title="Close player"
+                aria-label={t("closePlayer")}
+                title={t("closePlayer")}
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M7 7l10 10M17 7 7 17" />
@@ -1380,7 +1380,7 @@ export default function SoundCloudPlayer() {
                   type="button"
                   onClick={previousTrack}
                   disabled={!isReady}
-                  aria-label="Previous track"
+                  aria-label={t("previousTrack")}
                   className="custom-player-side-button"
                 >
                   <svg
@@ -1403,7 +1403,7 @@ export default function SoundCloudPlayer() {
                   type="button"
                   onClick={togglePlayback}
                   disabled={!isReady}
-                  aria-label={isPlaying ? "Pause track" : "Play track"}
+                  aria-label={isPlaying ? t("pauseTrack") : t("playTrack")}
                   className="custom-player-play-button"
                 >
                   {isPlaying ? (
@@ -1437,7 +1437,7 @@ export default function SoundCloudPlayer() {
                   type="button"
                   onClick={nextTrack}
                   disabled={!isReady}
-                  aria-label="Next track"
+                  aria-label={t("nextTrack")}
                   className="custom-player-side-button"
                 >
                   <svg
@@ -1471,7 +1471,7 @@ export default function SoundCloudPlayer() {
                       changeVolume(Number(event.target.value))
                     }
                     disabled={!isReady}
-                    aria-label="Volume"
+                    aria-label={t("volume")}
                     className="custom-volume-range"
                     style={volumeStyle}
                   />
@@ -1483,7 +1483,7 @@ export default function SoundCloudPlayer() {
                   type="button"
                   onClick={toggleMute}
                   disabled={!isReady}
-                  aria-label={isMuted ? "Enable sound" : "Mute sound"}
+                  aria-label={isMuted ? t("enableSound") : t("muteSound")}
                   className="custom-player-volume-button"
                 >
                   {isMuted ? (
