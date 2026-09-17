@@ -1688,7 +1688,7 @@ body.mobile-menu-open { overflow: hidden; }
   border-radius: 18px;
 }
 
-.release-library-card .release-card-glass h3 {
+.release-library-card .release-card-glass h4 {
   font-size: 12px;
 }
 
@@ -1990,7 +1990,7 @@ body.mobile-menu-open { overflow: hidden; }
   padding: 11px;
 }
 .release-library-card .release-card-glass > button > div { border-radius: 24px; }
-.release-library-card .release-card-glass h3 { font-size: 14px; }
+.release-library-card .release-card-glass h4 { font-size: 14px; }
 .release-library-arrow-up { top: 31px; }
 .release-library-arrow-down { bottom: 52px; }
 .release-library-fade-top { top: 93px; }
