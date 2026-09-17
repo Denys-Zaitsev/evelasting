@@ -3,8 +3,8 @@
 import { motion } from "motion/react";
 
 import BackgroundEffects from "./BackgroundEffects";
-import Discography from "./Discography";
 import FeaturedRelease from "./FeaturedRelease";
+import LatestReleases from "./LatestReleases";
 import NowPlayingRelease from "./NowPlayingRelease";
 import { releases } from "./releases";
 import { useLanguage } from "../LanguageContext";
@@ -40,7 +40,7 @@ export default function MusicSection() {
           <FeaturedRelease release={releases[0]} />
         </div>
 
-        <Discography />
+        <LatestReleases />
       </div>
     </section>
   );

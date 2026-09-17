@@ -49,7 +49,7 @@ export default function Navbar() {
     pathname === "/" ? `#${section}` : `/#${section}`;
 
   const navigation = [
-    { href: sectionHref("music"), label: t("music") },
+    { href: "/music", label: t("music") },
     { href: sectionHref("story"), label: t("story") },
     { href: "/about", label: t("about") },
     { href: sectionHref("contact"), label: t("contact") },

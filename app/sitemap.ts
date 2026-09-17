@@ -31,6 +31,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: [`${siteConfig.url}/about/denys-zaitsev.webp`],
     },
     {
+      url: `${siteConfig.url}/music`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: `${siteConfig.url}/privacy`,
       lastModified: new Date("2026-07-24"),
       changeFrequency: "yearly",

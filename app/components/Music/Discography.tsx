@@ -8,6 +8,11 @@ import ReleaseCard from "./ReleaseCard";
 
 type ReleaseFilter = "all" | "phonk" | "chill" | "collab";
 
+type DiscographyProps = {
+  headingLevel?: "h1" | "h2" | "h3";
+  isPage?: boolean;
+};
+
 function matchesFilter(title: string, genre: string, filter: ReleaseFilter) {
   if (filter === "all") return true;
   const normalizedTitle = title.toLowerCase();
@@ -17,11 +22,12 @@ function matchesFilter(title: string, genre: string, filter: ReleaseFilter) {
   return /feat\.|featuring|&| x |collab/.test(normalizedTitle);
 }
 
-export default function Discography() {
+export default function Discography({ headingLevel = "h3", isPage = false }: DiscographyProps) {
   const { tracks, currentTrack, isReady, isPlaying, playTrack, setPreviewArtwork } = usePlayer();
   const { t } = useLanguage();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<ReleaseFilter>("all");
+  const Heading = headingLevel;
 
   const visibleTracks = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -43,13 +49,13 @@ export default function Discography() {
   ];
 
   return (
-    <div id="discography" className="relative isolate mt-24 scroll-mt-24 lg:mt-32">
+    <div id="discography" className={`relative isolate scroll-mt-24 ${isPage ? "mt-0" : "mt-24 lg:mt-32"}`}>
       <div aria-hidden className="pointer-events-none absolute -inset-x-[18vw] -inset-y-28 -z-10 bg-[radial-gradient(ellipse_62%_42%_at_50%_45%,rgb(var(--release-accent)/.28),transparent_72%)] blur-[25px]" />
 
       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[.24em] text-white/45">{t("discography")}</p>
-          <h3 className="mt-3 text-3xl font-semibold tracking-[-.035em] text-white sm:text-5xl">{t("allReleases")}</h3>
+          <Heading className="mt-3 text-3xl font-semibold tracking-[-.035em] text-white sm:text-5xl">{t("allReleases")}</Heading>
         </div>
         <div className="max-w-md">
           <p className="text-sm leading-6 text-white/50">{t("chooseRelease")}</p>

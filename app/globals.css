@@ -1984,6 +1984,7 @@ body.mobile-menu-open { overflow: hidden; }
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(18px, 2vw, 28px);
 }
+.release-library-latest .release-library-scroll { padding: 4px; }
 .release-library-card { scroll-snap-align: start; }
 .release-library-card .release-card-glass {
   border-radius: 27px;
