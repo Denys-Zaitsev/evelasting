@@ -54,7 +54,7 @@ function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: Rel
 
       <div className="mt-3 flex min-w-0 items-start justify-between gap-3 sm:mt-4 sm:gap-4">
         <div className="min-w-0 flex-1">
-          <Link href={releaseHref} className="block max-w-full text-left"><h3 className="truncate text-sm font-medium text-white/90 transition-colors group-hover:text-white">{track.title}</h3></Link>
+          <Link href={releaseHref} className="block max-w-full text-left"><h4 className="truncate text-sm font-medium text-white/90 transition-colors group-hover:text-white">{track.title}</h4></Link>
           <p className="mt-1.5 truncate text-[8px] uppercase tracking-[0.18em] text-white/40 sm:mt-2 sm:text-[9px] sm:tracking-[0.22em]">{track.genre || t("music")}</p>
         </div>
         <span className="shrink-0 pt-0.5 text-[9px] text-white/35 sm:text-[10px]">{formatYear(track.publishedAt)}</span>
