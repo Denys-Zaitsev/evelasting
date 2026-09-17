@@ -1163,6 +1163,7 @@ export default function SoundCloudPlayer() {
         style={
           ({
             "--floating-player-width": `${playerWidth}px`,
+            "--floating-player-scale": String(playerWidth / PLAYER_MAX_WIDTH),
             ...(playerPosition
               ? {
                   "--floating-player-x": `${playerPosition.x}px`,
@@ -1538,7 +1539,7 @@ export default function SoundCloudPlayer() {
             </div>
 
             <div className="mt-5 flex items-center justify-between border-t border-white/[0.07] pt-4">
-              <span className="text-[8px] uppercase tracking-[0.25em] text-white/35">
+              <span className="custom-player-track-count text-[8px] uppercase tracking-[0.25em] text-white/35">
                 {tracks.length > 0
                   ? `${currentIndex + 1} / ${tracks.length}`
                   : t("loadingShort")}
