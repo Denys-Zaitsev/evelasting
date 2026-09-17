@@ -165,9 +165,9 @@ export default function AboutExperience() {
             <p className="text-[10px] font-medium uppercase tracking-[0.34em] text-red-400 sm:text-xs">
               {copy.eyebrow}
             </p>
-            <h1 className="mt-6 text-[clamp(3.7rem,10vw,8.5rem)] font-semibold leading-[0.82] tracking-[-0.075em] text-white">
+            <h1 className="mt-6 text-[clamp(3.7rem,10vw,8.5rem)] font-semibold leading-[0.9] tracking-[-0.075em] text-white">
               <span className="block">{copy.firstName}</span>
-              <span className="block text-white/34">{copy.lastName}</span>
+              <span className="mt-1 block text-white/34 sm:mt-2">{copy.lastName}</span>
             </h1>
             <p className="mt-7 text-xs uppercase tracking-[0.24em] text-white/55">
               {copy.role}
@@ -190,8 +190,18 @@ export default function AboutExperience() {
             transition={{ ...revealTransition, delay: 0.12 }}
             className="relative mx-auto aspect-square w-full max-w-[41rem]"
           >
-            <div aria-hidden className="absolute -inset-4 rounded-full border border-violet-400/10 sm:-inset-6" />
-            <div aria-hidden className="absolute -inset-1 rounded-full bg-gradient-to-br from-violet-500/45 via-white/10 to-red-500/25 blur-[1px]" />
+            <motion.div
+              aria-hidden
+              className="absolute -inset-4 rounded-full border border-violet-400/15 sm:-inset-6"
+              animate={reducedMotion ? undefined : { scale: [1, 1.018, 1], opacity: [0.38, 0.8, 0.38] }}
+              transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              aria-hidden
+              className="absolute -inset-1 rounded-full bg-[conic-gradient(from_0deg,rgba(139,92,246,.18),rgba(255,255,255,.55),rgba(185,28,65,.5),rgba(139,92,246,.18))] blur-[1px]"
+              animate={reducedMotion ? undefined : { rotate: 360 }}
+              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+            />
             <div className="relative h-full w-full overflow-hidden rounded-full border border-white/15 bg-white/[0.025] shadow-[0_40px_130px_rgba(69,20,170,.34)]">
               <Image
                 src="/about/denys-zaitsev.webp"
@@ -203,9 +213,6 @@ export default function AboutExperience() {
               />
               <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/38 via-transparent to-black/10" />
               <div aria-hidden className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-black/22 to-transparent" />
-              <p className="absolute bottom-[8%] left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] uppercase tracking-[0.3em] text-white/48 sm:text-[9px]">
-                Evelasting · 2026
-              </p>
             </div>
           </motion.div>
         </div>
