@@ -10,10 +10,11 @@ type ReleaseFilter = "all" | "phonk" | "chill" | "collab";
 
 function matchesFilter(title: string, genre: string, filter: ReleaseFilter) {
   if (filter === "all") return true;
+  const normalizedTitle = title.toLowerCase();
   const value = `${title} ${genre}`.toLowerCase();
   if (filter === "phonk") return /phonk|hip-hop|rap/.test(value);
   if (filter === "chill") return /chill|ambient|wave|dream|sunset|silence|violin/.test(value);
-  return /feat\.|featuring|&| x |collab/.test(value);
+  return /feat\.|featuring|&| x |collab/.test(normalizedTitle);
 }
 
 export default function Discography() {
