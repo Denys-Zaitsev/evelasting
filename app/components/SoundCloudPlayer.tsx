@@ -722,6 +722,17 @@ export default function SoundCloudPlayer() {
         widget.getSounds((sounds) => {
           const safeSounds = Array.isArray(sounds) ? sounds : [];
 
+          // Some browsers briefly return an empty playlist while the
+          // SoundCloud widget is still negotiating third-party access. Keep
+          // the verified local catalogue visible instead of replacing it
+          // with an empty list, and retry the live metadata in the background.
+          if (safeSounds.length === 0) {
+            if (attempt < 5) {
+              window.setTimeout(() => load(attempt + 1), 900 + attempt * 650);
+            }
+            return;
+          }
+
           const previousTracks = tracksRef.current;
           const mergedTracks = safeSounds.map((sound, index) => ({
             ...previousTracks[index],
