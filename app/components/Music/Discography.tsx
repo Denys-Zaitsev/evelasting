@@ -86,7 +86,7 @@ export default function Discography({ headingLevel = "h3", isPage = false }: Dis
               <div className="release-library-grid">
                 {visibleTracks.map((track) => {
                   const originalIndex = tracks.findIndex((item) => item.id === track.id);
-                  return <div key={track.id} className="release-library-card"><ReleaseCard track={track} index={originalIndex} active={currentTrack?.id === track.id} isPlaying={Boolean(currentTrack?.id === track.id && isPlaying)} onPlay={handlePlay} onPreview={handlePreview} /></div>;
+                  return <div key={track.id} className="release-library-card"><ReleaseCard track={track} index={originalIndex} active={currentTrack?.id === track.id} isPlaying={Boolean(currentTrack?.id === track.id && isPlaying)} onPlay={handlePlay} onPreview={handlePreview} titleLevel={isPage ? "h2" : "h4"} /></div>;
                 })}
               </div>
             ) : (

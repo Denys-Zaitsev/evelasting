@@ -20,12 +20,14 @@ type ReleaseCardProps = {
   isPlaying: boolean;
   onPlay: (index: number) => void;
   onPreview: (artwork: string | null) => void;
+  titleLevel?: "h2" | "h3" | "h4";
 };
 
-function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: ReleaseCardProps) {
+function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview, titleLevel = "h4" }: ReleaseCardProps) {
   const { t } = useLanguage();
   const release = getReleaseByTitle(track.title);
   const releaseHref = release ? `/music/${release.slug}` : track.permalink;
+  const Title = titleLevel;
 
   return (
     <article
@@ -53,7 +55,7 @@ function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: Rel
 
       <div className="mt-3 flex min-w-0 items-start justify-between gap-3 sm:mt-4 sm:gap-4">
         <div className="min-w-0 flex-1">
-          <Link href={releaseHref} target={release ? undefined : "_blank"} rel={release ? undefined : "noreferrer"} className="block max-w-full text-left"><h4 className="truncate text-sm font-medium text-white/90 transition-colors group-hover:text-white">{track.title}</h4></Link>
+          <Link href={releaseHref} target={release ? undefined : "_blank"} rel={release ? undefined : "noreferrer"} className="block max-w-full text-left"><Title className="truncate text-sm font-medium text-white/90 transition-colors group-hover:text-white">{track.title}</Title></Link>
           <p className="mt-1.5 truncate text-[8px] uppercase tracking-[0.18em] text-white/40 sm:mt-2 sm:text-[9px] sm:tracking-[0.22em]">{track.genre || t("music")}</p>
         </div>
         <span className="shrink-0 pt-0.5 text-[9px] text-white/35 sm:text-[10px]">{formatYear(track.publishedAt)}</span>
@@ -73,4 +75,4 @@ function ReleaseCard({ track, index, active, isPlaying, onPlay, onPreview }: Rel
   );
 }
 
-export default memo(ReleaseCard, (prev, next) => prev.track === next.track && prev.index === next.index && prev.active === next.active && prev.isPlaying === next.isPlaying && prev.onPlay === next.onPlay && prev.onPreview === next.onPreview);
+export default memo(ReleaseCard, (prev, next) => prev.track === next.track && prev.index === next.index && prev.active === next.active && prev.isPlaying === next.isPlaying && prev.onPlay === next.onPlay && prev.onPreview === next.onPreview && prev.titleLevel === next.titleLevel);

@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: `${siteConfig.url}/music`,
+    siteName: siteConfig.name,
+    locale: siteConfig.locale,
     title: "Evelasting Music & Releases",
     description:
       "Explore the complete discography of independent Ukrainian producer Evelasting.",
@@ -32,8 +34,14 @@ export const metadata: Metadata = {
 const musicCollectionSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
+  "@id": `${siteConfig.url}/music#discography`,
   name: "Evelasting Music & Releases",
   url: `${siteConfig.url}/music`,
+  description:
+    "The official discography of independent Ukrainian producer Evelasting.",
+  isPartOf: { "@id": `${siteConfig.url}/#website` },
+  about: { "@id": `${siteConfig.url}/#artist` },
+  inLanguage: "en",
   mainEntity: {
     "@type": "ItemList",
     numberOfItems: releases.length,

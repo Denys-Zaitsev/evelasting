@@ -6,8 +6,44 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Privacy and cookie information for the official Evelasting website.",
+    "Learn how the official Evelasting website handles analytics, cookies, external music services and your privacy choices.",
   alternates: { canonical: "/privacy" },
+  openGraph: {
+    type: "website",
+    url: `${siteConfig.url}/privacy`,
+    siteName: siteConfig.name,
+    locale: siteConfig.locale,
+    title: "Privacy Policy | Evelasting",
+    description:
+      "Learn how Evelasting handles analytics, cookies, external music services and your privacy choices.",
+    images: [
+      {
+        url: "/og/evelasting-og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Evelasting — Independent Ukrainian Producer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | Evelasting",
+    description:
+      "Learn how Evelasting handles analytics, cookies, external music services and your privacy choices.",
+    images: ["/og/evelasting-og.jpg"],
+  },
+};
+
+const privacyPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${siteConfig.url}/privacy#webpage`,
+  url: `${siteConfig.url}/privacy`,
+  name: "Privacy Policy | Evelasting",
+  description:
+    "Privacy, analytics and cookie information for the official Evelasting website.",
+  isPartOf: { "@id": `${siteConfig.url}/#website` },
+  inLanguage: "en",
 };
 
 const sections = [
@@ -163,14 +199,15 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <main
-      id="main-content"
-      className="min-h-screen bg-[#050505] px-4 py-5 text-white sm:px-8 sm:py-8 lg:px-12"
-    >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(185,28,65,0.16),transparent_36%),radial-gradient(circle_at_85%_70%,rgba(70,20,35,0.12),transparent_38%)]"
-      />
+    <>
+      <main
+        id="main-content"
+        className="min-h-screen bg-[#050505] px-4 py-5 text-white sm:px-8 sm:py-8 lg:px-12"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(185,28,65,0.16),transparent_36%),radial-gradient(circle_at_85%_70%,rgba(70,20,35,0.12),transparent_38%)]"
+        />
 
       <div className="relative mx-auto max-w-4xl">
         <header className="flex items-center justify-between gap-4 border-b border-white/10 pb-5 sm:pb-7">
@@ -229,6 +266,11 @@ export default function PrivacyPage() {
           </Link>
         </footer>
       </div>
-    </main>
+      </main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(privacyPageSchema) }}
+      />
+    </>
   );
 }

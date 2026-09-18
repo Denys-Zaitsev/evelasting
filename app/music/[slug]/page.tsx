@@ -31,7 +31,7 @@ export async function generateMetadata({
   }
 
   const title = `${release.title} — ${release.artist}`;
-  const description = `${release.description} Listen to ${release.title}, a ${release.genre} release by Ukrainian producer Evelasting.`;
+  const description = `${release.description} Official release by Evelasting.`;
   const canonical = `/music/${release.slug}`;
 
   return {
@@ -49,6 +49,7 @@ export async function generateMetadata({
       type: "music.song",
       url: canonical,
       siteName: siteConfig.name,
+      locale: siteConfig.locale,
       title,
       description,
       images: [
@@ -81,6 +82,12 @@ function ReleaseSchema({ release }: { release: Release }) {
     description: release.description,
     genre: release.genre,
     datePublished: String(release.year),
+    mainEntityOfPage: `${siteConfig.url}/music/${release.slug}`,
+    isPartOf: {
+      "@type": "CollectionPage",
+      "@id": `${siteConfig.url}/music#discography`,
+      name: "Evelasting Music & Releases",
+    },
     byArtist: {
       "@type": "MusicGroup",
       "@id": `${siteConfig.url}/#artist`,
